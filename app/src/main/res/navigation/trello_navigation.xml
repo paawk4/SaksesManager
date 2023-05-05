@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.pawka.trellocloneapp.presentation.fragments.StartFragment"
+        android:name="com.pawka.trellocloneapp.presentation.fragments.start.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start" >
         <action
@@ -19,12 +19,27 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.pawka.trellocloneapp.presentation.fragments.SignUpFragment"
+        android:name="com.pawka.trellocloneapp.presentation.fragments.sign_up.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_boardsFragment"
+            app:destination="@id/boardsFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false" />
+    </fragment>
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.pawka.trellocloneapp.presentation.fragments.SignInFragment"
+        android:name="com.pawka.trellocloneapp.presentation.fragments.sign_in.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" />
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFragment_to_boardsFragment"
+            app:destination="@id/boardsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/boardsFragment"
+        android:name="com.pawka.trellocloneapp.presentation.fragments.boards.BoardsFragment"
+        android:label="fragment_boards"
+        tools:layout="@layout/fragment_boards" />
 </navigation>

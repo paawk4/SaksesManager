@@ -1,6 +1,5 @@
 package com.pawka.trellocloneapp.domain.user
 
-import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
 

@@ -1,4 +1,4 @@
-package com.pawka.trellocloneapp.presentation.fragments
+package com.pawka.trellocloneapp.presentation.fragments.start
 
 import android.os.Bundle
 import android.view.LayoutInflater

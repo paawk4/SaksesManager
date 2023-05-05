@@ -1,59 +1,77 @@
 package com.pawka.trellocloneapp.data
 
 import android.util.Log
-import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.database.FirebaseDatabase
 import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.domain.user.UserRepository
-import learning.self.kotlin.projectmanager.utils.Constants
 
 object UserRepositoryImpl : UserRepository {
 
-    private val auth = FirebaseAuth.getInstance()
-    private val fireStore = FirebaseFirestore.getInstance()
+    private val currentUserIdLiveData = MutableLiveData<String>()
 
-    override fun signUpUser(login: String, password: String): FirebaseUser? {
-        var firebaseUser: FirebaseUser? = null
+    const val DB_URL =
+        "https://trellocloneapp-b007f-default-rtdb.europe-west1.firebasedatabase.app/"
+    const val USERS: String = "users"
+
+    private val auth = FirebaseAuth.getInstance()
+
+    private val userFirebaseHandler = UserFirebaseHandler()
+
+    override fun signUpUser(name: String, login: String, password: String) {
         auth.createUserWithEmailAndPassword(login, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    task.result.user?.let {
-                        firebaseUser = it
+                    auth.currentUser?.let {
+                        val currentUser = User(it.uid, name, login)
+                        userFirebaseHandler.writeUserToDatabase(currentUser)
                     }
                 } else {
-                    Log.d("Register", "Registration Failed. Try Again")
+                    Log.d("Register", "Registration Failed\n")
+                    currentUserIdLiveData.value = ""
                 }
             }
-        return firebaseUser
     }
 
-    override fun signInUser(email: String, password: String): User {
-        var loggedInUser = User()
+    override fun signInUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    loggedInUser = loadUserData()
-                } else {
-                    Log.d("Register", "Authentication failed")
+            .addOnSuccessListener {
+                currentUserIdLiveData.value = auth.currentUser?.uid ?: ""
+            }
+            .addOnFailureListener {
+                currentUserIdLiveData.value = ""
+                Log.d("Login", "Login Failed\n")
+            }
+    }
+
+    override fun getCurrentUserId(): LiveData<String> {
+        return currentUserIdLiveData
+    }
+
+    class UserFirebaseHandler {
+
+        private val db = FirebaseDatabase.getInstance(DB_URL).reference.child(USERS)
+        fun writeUserToDatabase(userInfo: User) {
+            val user = mutableMapOf<String, Any>()
+            user["id"] = userInfo.id
+            user["name"] = userInfo.name
+            user["email"] = userInfo.email
+            db.child(userInfo.id).setValue(user)
+                .addOnSuccessListener {
+                    currentUserIdLiveData.value = auth.currentUser?.uid ?: ""
                 }
-            }
-        return loggedInUser
-    }
+                .addOnFailureListener {
+                    Log.d("Register", "writeUserToDatabase failed\n ${it.message}")
+                }
+        }
 
-    override fun loadUserData(): User {
-        var loggedInUser = User()
-        fireStore.collection(Constants.USERS)
-            .document(getCurrentUserId())
-            .get()
-            .addOnSuccessListener { document ->
-                loggedInUser = document.toObject(User::class.java)!!
-            }
-        return loggedInUser
-    }
-
-    override fun getCurrentUserId(): String {
-        return auth.currentUser!!.uid
+//        fun loadUserData(): User {
+//            return db.collection(Constants.USERS)
+//                .document(getCurrentUserId())
+//                .get()
+//                .result.toObject(User::class.java)!!
+//        }
     }
 }

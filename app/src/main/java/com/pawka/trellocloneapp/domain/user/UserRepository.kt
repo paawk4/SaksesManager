@@ -1,14 +1,12 @@
 package com.pawka.trellocloneapp.domain.user
 
-import com.google.firebase.auth.FirebaseUser
+import androidx.lifecycle.LiveData
 
 interface UserRepository {
 
-    fun signUpUser(login: String, password: String): FirebaseUser?
+    fun signUpUser(name: String, login: String, password: String)
 
-    fun signInUser(email: String, password: String): User
+    fun signInUser(email: String, password: String)
 
-    fun loadUserData(): User
-
-    fun getCurrentUserId(): String
+    fun getCurrentUserId(): LiveData<String>
 }

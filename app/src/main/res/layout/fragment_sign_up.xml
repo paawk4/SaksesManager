@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.SignUpFragment">
+    tools:context=".presentation.fragments.sign_up.SignUpFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_sign_up_activity"

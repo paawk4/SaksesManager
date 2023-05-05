@@ -1,4 +1,4 @@
-package com.pawka.trellocloneapp.presentation.fragments
+package com.pawka.trellocloneapp.presentation.fragments.sign_in
 
 import android.os.Bundle
 import android.text.Editable
@@ -19,6 +19,8 @@ class SignInFragment : Fragment() {
 
     private lateinit var viewModel: SignInViewModel
 
+    private lateinit var layoutView: View
+
     private lateinit var tilEmail: TextInputLayout
     private lateinit var tilPassword: TextInputLayout
     private lateinit var etEmail: EditText
@@ -35,19 +37,17 @@ class SignInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[SignInViewModel::class.java]
-        initView(view)
+        initViews(view)
         addTextChangeListeners()
         observeViewModel()
 
         btnSignIn.setOnClickListener {
-            val user = viewModel.signInUser(etEmail.text.toString(), etPassword.text.toString())
-            if (user?.fcmToken.isNullOrBlank()) {
-                Toast.makeText(view.context, user?.email, Toast.LENGTH_SHORT).show()
-            }
+            viewModel.signInUser(etEmail.text.toString(), etPassword.text.toString())
         }
     }
 
-    private fun initView(view: View) {
+    private fun initViews(view: View) {
+        layoutView = view
         tilEmail = view.findViewById(R.id.sign_in_email_til)
         tilPassword = view.findViewById(R.id.sign_in_password_til)
         etEmail = view.findViewById(R.id.sign_in_email_et)
@@ -102,6 +102,14 @@ class SignInFragment : Fragment() {
                 null
             }
         }
+        viewModel.currentFirebaseUid.observe(viewLifecycleOwner) {
+            if (it != "") {
+                Toast.makeText(layoutView.context, "Вход выполнен успешно", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_signInFragment_to_boardsFragment)
+            } else {
+                Toast.makeText(layoutView.context, "Попробуй еще раз", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
-
 }

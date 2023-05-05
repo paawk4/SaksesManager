@@ -5,7 +5,7 @@ import com.pawka.trellocloneapp.domain.user.UserRepository
 
 class SignInUserUseCase(private val userRepository: UserRepository) {
 
-    fun signInUser(email: String, password: String) : User {
+    fun signInUser(email: String, password: String) {
         return userRepository.signInUser(email, password)
     }
 }
