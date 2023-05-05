@@ -1,13 +1,16 @@
-package learning.self.kotlin.projectmanager.utils
+package com.pawka.trellocloneapp.utils
 
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
-import com.pawka.trellocloneapp.R
+import com.pawka.trellocloneapp.presentation.MainActivity
 
 object Constants {
+
+    lateinit var APP_ACTIVITY: MainActivity
+
     const val USERS: String = "users"
     const val BOARDS: String = "boards"
     const val IMAGE: String = "image"

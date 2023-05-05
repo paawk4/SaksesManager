@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_startFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_boardsFragment"
+            app:destination="@id/boardsFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -24,9 +27,7 @@
         tools:layout="@layout/fragment_sign_up" >
         <action
             android:id="@+id/action_signUpFragment_to_boardsFragment"
-            app:destination="@id/boardsFragment"
-            app:launchSingleTop="false"
-            app:popUpToInclusive="false" />
+            app:destination="@id/boardsFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"

@@ -9,4 +9,5 @@ interface UserRepository {
     fun signInUser(email: String, password: String)
 
     fun getCurrentUserId(): LiveData<String>
+    fun getCurrentUserData(): LiveData<User>
 }

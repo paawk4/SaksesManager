@@ -7,10 +7,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.domain.user.UserRepository
+import com.pawka.trellocloneapp.utils.AppValueEventListener
 
 object UserRepositoryImpl : UserRepository {
 
     private val currentUserIdLiveData = MutableLiveData<String>()
+    private val currentUserLiveData = MutableLiveData<User>()
 
     const val DB_URL =
         "https://trellocloneapp-b007f-default-rtdb.europe-west1.firebasedatabase.app/"
@@ -50,6 +52,11 @@ object UserRepositoryImpl : UserRepository {
         return currentUserIdLiveData
     }
 
+    override fun getCurrentUserData(): LiveData<User> {
+        userFirebaseHandler.loadUserData()
+        return currentUserLiveData
+    }
+
     class UserFirebaseHandler {
 
         private val db = FirebaseDatabase.getInstance(DB_URL).reference.child(USERS)
@@ -67,11 +74,11 @@ object UserRepositoryImpl : UserRepository {
                 }
         }
 
-//        fun loadUserData(): User {
-//            return db.collection(Constants.USERS)
-//                .document(getCurrentUserId())
-//                .get()
-//                .result.toObject(User::class.java)!!
-//        }
+        fun loadUserData() {
+            db.child(auth.currentUser!!.uid)
+                .addListenerForSingleValueEvent(AppValueEventListener {
+                    currentUserLiveData.value = it.getValue(User::class.java) ?: User()
+                })
+        }
     }
 }

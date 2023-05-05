@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.pawka.trellocloneapp.R
+import com.pawka.trellocloneapp.utils.Constants
 
 class StartFragment : Fragment() {
 
@@ -21,9 +22,16 @@ class StartFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_start, container, false)
     }
 
+    private fun configureToolbar() {
+        Constants.APP_ACTIVITY.toolbar.visibility = View.GONE
+        Constants.APP_ACTIVITY.toolbar.title = "S-STROY MANAGER"
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
+        configureToolbar()
+
 
         signInBtn.setOnClickListener {
             signIn()
@@ -31,6 +39,7 @@ class StartFragment : Fragment() {
         signUpBtn.setOnClickListener {
             signUp()
         }
+        findNavController().navigate(R.id.action_startFragment_to_boardsFragment)
     }
 
     private fun signUp() {

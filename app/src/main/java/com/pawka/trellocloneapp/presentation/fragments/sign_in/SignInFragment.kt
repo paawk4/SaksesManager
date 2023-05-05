@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.pawka.trellocloneapp.R
+import com.pawka.trellocloneapp.utils.Constants
 
 class SignInFragment : Fragment() {
 
@@ -40,10 +41,17 @@ class SignInFragment : Fragment() {
         initViews(view)
         addTextChangeListeners()
         observeViewModel()
+        configureToolbar()
+
 
         btnSignIn.setOnClickListener {
             viewModel.signInUser(etEmail.text.toString(), etPassword.text.toString())
         }
+    }
+
+    private fun configureToolbar() {
+        Constants.APP_ACTIVITY.toolbar.visibility = View.VISIBLE
+        Constants.APP_ACTIVITY.toolbar.title = "SIGN IN"
     }
 
     private fun initViews(view: View) {
