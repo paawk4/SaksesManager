@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.domain.user.UserRepository
@@ -11,8 +12,7 @@ import com.pawka.trellocloneapp.utils.AppValueEventListener
 
 object UserRepositoryImpl : UserRepository {
 
-    private val currentUserIdLiveData = MutableLiveData<String>()
-    private val currentUserLiveData = MutableLiveData<User>()
+    private val currentUserLiveData = MutableLiveData<User?>()
 
     const val DB_URL =
         "https://trellocloneapp-b007f-default-rtdb.europe-west1.firebasedatabase.app/"
@@ -32,7 +32,7 @@ object UserRepositoryImpl : UserRepository {
                     }
                 } else {
                     Log.d("Register", "Registration Failed\n")
-                    currentUserIdLiveData.value = ""
+                    currentUserLiveData.value = User(id = "error")
                 }
             }
     }
@@ -40,34 +40,40 @@ object UserRepositoryImpl : UserRepository {
     override fun signInUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                currentUserIdLiveData.value = auth.currentUser?.uid ?: ""
+                userFirebaseHandler.loadUserData()
             }
             .addOnFailureListener {
-                currentUserIdLiveData.value = ""
+                currentUserLiveData.value = User(id = "error")
                 Log.d("Login", "Login Failed\n")
             }
     }
 
-    override fun getCurrentUserId(): LiveData<String> {
-        return currentUserIdLiveData
+    override fun signOutUser() {
+        auth.signOut()
+        currentUserLiveData.value = null
     }
 
-    override fun getCurrentUserData(): LiveData<User> {
+    override fun getCurrentUserData(): MutableLiveData<User?> {
         userFirebaseHandler.loadUserData()
         return currentUserLiveData
+    }
+
+    override fun getCurrentFirebaseUser(): FirebaseUser? {
+        userFirebaseHandler.loadUserData()
+        return auth.currentUser
+    }
+
+    override fun editUserData(name: String, login: String, password: String) {
+
     }
 
     class UserFirebaseHandler {
 
         private val db = FirebaseDatabase.getInstance(DB_URL).reference.child(USERS)
         fun writeUserToDatabase(userInfo: User) {
-            val user = mutableMapOf<String, Any>()
-            user["id"] = userInfo.id
-            user["name"] = userInfo.name
-            user["email"] = userInfo.email
-            db.child(userInfo.id).setValue(user)
+            db.child(userInfo.id).setValue(userInfo)
                 .addOnSuccessListener {
-                    currentUserIdLiveData.value = auth.currentUser?.uid ?: ""
+                    loadUserData()
                 }
                 .addOnFailureListener {
                     Log.d("Register", "writeUserToDatabase failed\n ${it.message}")
@@ -75,10 +81,14 @@ object UserRepositoryImpl : UserRepository {
         }
 
         fun loadUserData() {
-            db.child(auth.currentUser!!.uid)
-                .addListenerForSingleValueEvent(AppValueEventListener {
-                    currentUserLiveData.value = it.getValue(User::class.java) ?: User()
-                })
+            auth.currentUser?.let {
+                db.child(it.uid)
+                    .addListenerForSingleValueEvent(AppValueEventListener {snapshot ->
+                        val user = snapshot.getValue(User::class.java) ?: User()
+                        currentUserLiveData.value = user
+                    })
+            }
+
         }
     }
 }

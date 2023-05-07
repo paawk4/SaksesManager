@@ -1,15 +1,22 @@
 package com.pawka.trellocloneapp.utils
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
+import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
+import android.widget.ImageView
+import androidx.navigation.NavController
+import com.bumptech.glide.Glide
+import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.presentation.MainActivity
 
 object Constants {
 
     lateinit var APP_ACTIVITY: MainActivity
+    lateinit var NAV_CONTROLLER: NavController
 
     const val USERS: String = "users"
     const val BOARDS: String = "boards"
@@ -31,6 +38,23 @@ object Constants {
 
     const val TASK_LIST_ITEM_POSITION: String = "task_list_item_position"
     const val CARD_LIST_ITEM_POSITION: String = "card_list_item_position"
+
+    fun hideKeyboard() {
+        com.mikepenz.materialdrawer.R.color.material_drawer_accent
+        val imm: InputMethodManager =
+            APP_ACTIVITY.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(APP_ACTIVITY.window.decorView.windowToken, 0)
+    }
+
+    fun restartActivity() {
+        val intent = Intent(APP_ACTIVITY, MainActivity::class.java)
+        APP_ACTIVITY.startActivity(intent)
+        APP_ACTIVITY.finish()
+    }
+
+    fun parseString(string: String?): String {
+        return string?.trim() ?: ""
+    }
 
     fun getFileExtension(activity: Activity, uri: Uri?): String? {
         return MimeTypeMap.getSingleton()

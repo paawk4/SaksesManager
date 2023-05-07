@@ -1,8 +1,13 @@
 package com.pawka.trellocloneapp.presentation.app_drawer
 
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.view.View
+import android.widget.ImageView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -10,16 +15,20 @@ import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
+import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.presentation.fragments.sign_up.SignUpViewModel
 import com.pawka.trellocloneapp.utils.Constants
 import com.pawka.trellocloneapp.utils.Constants.APP_ACTIVITY
+import com.pawka.trellocloneapp.utils.Constants.NAV_CONTROLLER
+import com.pawka.trellocloneapp.utils.Constants.hideKeyboard
+import com.pawka.trellocloneapp.utils.Constants.restartActivity
 
 class AppDrawer {
 
     private lateinit var viewModel: AppDrawerViewModel
-
 
     private var currentUser = User()
 
@@ -29,11 +38,11 @@ class AppDrawer {
     private lateinit var mCurrentProfile: ProfileDrawerItem
 
     fun create() {
+        viewModel = ViewModelProvider(APP_ACTIVITY)[AppDrawerViewModel::class.java]
         initLoader()
         createHeader()
         createDrawer()
         mDrawerLayout = mDrawer.drawerLayout
-        viewModel = ViewModelProvider(APP_ACTIVITY)[AppDrawerViewModel::class.java]
     }
 
     fun disableDrawer() {
@@ -41,8 +50,8 @@ class AppDrawer {
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         APP_ACTIVITY.toolbar.setNavigationOnClickListener {
-            APP_ACTIVITY.supportFragmentManager.popBackStack()
-//            hideKeyboard()
+            NAV_CONTROLLER.popBackStack()
+            hideKeyboard()
         }
     }
 
@@ -55,8 +64,12 @@ class AppDrawer {
             mDrawer.openDrawer()
         }
         viewModel.currentUserData.observe(APP_ACTIVITY) {
-            if (it.id != "")
+            if (it != null && it.id != "error") {
                 currentUser = it
+                updateHeader()
+            } else {
+                viewModel.signOut()
+            }
         }
     }
 
@@ -70,7 +83,7 @@ class AppDrawer {
             .addDrawerItems(
                 PrimaryDrawerItem().withIdentifier(101)
                     .withIconTintingEnabled(true)
-                    .withName("Профиль")
+                    .withName("Настройки")
                     .withSelectable(false)
                     .withIcon(R.drawable.ic_nav_user),
                 PrimaryDrawerItem().withIdentifier(103)
@@ -91,10 +104,10 @@ class AppDrawer {
     }
 
     private fun clickToItem(position: Int) {
-//        when (position) {
-//            1 ->
-//            2 ->
-//        }
+        when (position) {
+            1 -> NAV_CONTROLLER.navigate(R.id.action_boardsFragment_to_settingsFragment)
+            2 -> viewModel.signOut()
+        }
     }
 
     private fun createHeader() {
@@ -106,24 +119,29 @@ class AppDrawer {
         mHeader = AccountHeaderBuilder()
             .withActivity(APP_ACTIVITY)
             .withHeaderBackground(R.color.colorAccent)
+            .withTextColor(Color.WHITE)
             .addProfiles(
                 mCurrentProfile
             ).build()
     }
 
-    fun updateHeader() {
-//        mCurrentProfile
-//            .withName(USER.fullname)
-//            .withEmail(USER.phone)
-//            .withIcon(USER.photoUrl)
-//        mHeader.updateProfile(mCurrentProfile)
+    private fun updateHeader() {
+        mCurrentProfile
+            .withName(currentUser.name)
+            .withEmail(currentUser.email)
+            .withIcon(currentUser.image)
+        mHeader.updateProfile(mCurrentProfile)
     }
 
     private fun initLoader() {
-//        DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
-//            override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable) {
-//                imageView.downloadAndSetImage(uri.toString())
-//            }
-//        })
+        DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
+            override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable) {
+                Glide
+                    .with(APP_ACTIVITY)
+                    .load(uri)
+                    .centerCrop()
+                    .into(imageView)
+            }
+        })
     }
 }

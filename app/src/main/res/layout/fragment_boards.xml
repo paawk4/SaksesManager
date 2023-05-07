@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="No Boards Available!"
+            android:text="@string/boards_available_text"
             android:textColor="@color/secondary_text_color"
             android:textSize="18sp" />
     </androidx.cardview.widget.CardView>

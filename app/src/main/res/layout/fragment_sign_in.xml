@@ -21,7 +21,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
             android:gravity="center"
-            android:text="Enter your email and password to sign in."
+            android:text="@string/sign_in_text"
             android:textColor="@color/secondary_text_color"
             android:textSize="16sp"
             android:id="@+id/sign_in_description_tv"/>
@@ -53,7 +53,7 @@
                         android:id="@+id/sign_in_email_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Email"
+                        android:hint="@string/email"
                         android:inputType="textEmailAddress"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -70,7 +70,7 @@
                         android:id="@+id/sign_in_password_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Password"
+                        android:hint="@string/password"
                         android:inputType="textPassword"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -88,7 +88,7 @@
                     android:gravity="center"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:text="SIGN IN"
+                    android:text="@string/sign_in_btn_text"
                     android:textColor="@color/white"
                     android:textSize="18sp"/>
             </LinearLayout>

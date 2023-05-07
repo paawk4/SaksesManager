@@ -1,8 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.TrelloCloneApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
     </style>
 
     <style name="Theme.TrelloCloneApp" parent="Theme.AppCompat.DayNight.NoActionBar">
@@ -15,5 +14,8 @@
         name="AppTheme.AppBarOverlay"/>
 
     <style parent="ThemeOverlay.AppCompat.Light"
-        name="AppTheme.PopupOverlay"/>
+        name="AppTheme.PopupOverlay">
+        <item name="colorPrimary">@color/white</item>
+    </style>
+
 </resources>

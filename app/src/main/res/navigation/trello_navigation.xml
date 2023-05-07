@@ -42,5 +42,21 @@
         android:id="@+id/boardsFragment"
         android:name="com.pawka.trellocloneapp.presentation.fragments.boards.BoardsFragment"
         android:label="fragment_boards"
-        tools:layout="@layout/fragment_boards" />
+        tools:layout="@layout/fragment_boards" >
+        <action
+            android:id="@+id/action_boardsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_boardsFragment_to_createBoardFragment"
+            app:destination="@id/createBoardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.pawka.trellocloneapp.presentation.fragments.profile.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/createBoardFragment"
+        android:name="com.pawka.trellocloneapp.presentation.fragments.create_board.CreateBoardFragment"
+        android:label="fragment_create_board"
+        tools:layout="@layout/fragment_create_board" />
 </navigation>

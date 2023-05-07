@@ -1,22 +1,21 @@
 package com.pawka.trellocloneapp.presentation.fragments.sign_in
 
-import android.text.BoringLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pawka.trellocloneapp.data.UserRepositoryImpl
-import com.pawka.trellocloneapp.domain.user.User
-import com.pawka.trellocloneapp.domain.user.use_cases.GetCurrentUserIdUseCase
+import com.pawka.trellocloneapp.domain.user.use_cases.GetCurrentUserDataUseCase
 import com.pawka.trellocloneapp.domain.user.use_cases.SignInUserUseCase
+import com.pawka.trellocloneapp.utils.Constants.parseString
 
 class SignInViewModel : ViewModel() {
 
     private val repository = UserRepositoryImpl
 
     private val signInUserUseCase = SignInUserUseCase(repository)
-    private val getCurrentUserIdUseCase = GetCurrentUserIdUseCase(repository)
+    private val getCurrentUserDataUseCase = GetCurrentUserDataUseCase(repository)
 
-    val currentFirebaseUid = getCurrentUserIdUseCase.getCurrentUserId()
+    val currentUserData = getCurrentUserDataUseCase.getCurrentUserData()
 
     private val _errorInputEmail = MutableLiveData<Boolean>()
     val errorInputEmail: LiveData<Boolean>
@@ -46,10 +45,6 @@ class SignInViewModel : ViewModel() {
             result = false
         }
         return result
-    }
-
-    private fun parseString(string: String?): String {
-        return string?.trim() ?: ""
     }
 
     fun resetErrorInputEmail() {

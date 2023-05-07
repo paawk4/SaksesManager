@@ -1,5 +1,6 @@
 package com.pawka.trellocloneapp.presentation.fragments.sign_in
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.utils.Constants
+import com.pawka.trellocloneapp.utils.Constants.APP_ACTIVITY
+import com.pawka.trellocloneapp.utils.Constants.NAV_CONTROLLER
 
 class SignInFragment : Fragment() {
 
@@ -43,15 +46,14 @@ class SignInFragment : Fragment() {
         observeViewModel()
         configureToolbar()
 
-
         btnSignIn.setOnClickListener {
             viewModel.signInUser(etEmail.text.toString(), etPassword.text.toString())
         }
     }
 
     private fun configureToolbar() {
-        Constants.APP_ACTIVITY.toolbar.visibility = View.VISIBLE
-        Constants.APP_ACTIVITY.toolbar.title = "SIGN IN"
+        APP_ACTIVITY.toolbar.visibility = View.VISIBLE
+        APP_ACTIVITY.toolbar.title = "Авторизация"
     }
 
     private fun initViews(view: View) {
@@ -110,11 +112,12 @@ class SignInFragment : Fragment() {
                 null
             }
         }
-        viewModel.currentFirebaseUid.observe(viewLifecycleOwner) {
-            if (it != "") {
+        viewModel.currentUserData.observe(viewLifecycleOwner) {
+            if (it != null && it.id != "error") {
                 Toast.makeText(layoutView.context, "Вход выполнен успешно", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_signInFragment_to_boardsFragment)
-            } else {
+                NAV_CONTROLLER.navigate(R.id.action_signInFragment_to_boardsFragment)
+            }
+            if (it?.id == "error") {
                 Toast.makeText(layoutView.context, "Попробуй еще раз", Toast.LENGTH_SHORT)
                     .show()
             }

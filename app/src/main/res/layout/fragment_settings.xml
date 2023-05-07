@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="presentation.fragments.profile.SettingsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_header_block"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/settings_user_photo"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="@dimen/app_margin"
+            android:src="@drawable/ic_user_place_holder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/settings_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Admin"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="@dimen/normalText"
+            android:layout_marginStart="@dimen/app_margin"
+            app:layout_constraintTop_toTopOf="@id/settings_user_photo"
+            app:layout_constraintStart_toEndOf="@id/settings_user_photo"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/settings_text_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Аккаунт"
+        android:textSize="@dimen/smallText"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/app_margin"
+        android:layout_marginTop="@dimen/app_margin"
+        android:textColor="@color/material_drawer_accent"
+        app:layout_constraintTop_toBottomOf="@id/settings_header_block"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_btn_change_email"
+        style="@style/settings_btns"
+        android:focusableInTouchMode="false"
+        android:hapticFeedbackEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settings_text_account">
+
+        <TextView
+            android:id="@+id/settings_email"
+            style="@style/normalText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/settings_btn_change_email"
+            tools:text="pawka@gmaiol.com" />
+
+        <TextView
+            android:id="@+id/settings_label_email"
+            style="@style/smallText"
+            android:text="Нажмите чтобы изменить почту"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settings_email" />
+
+        <View
+            style="@style/separator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settings_label_email" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_btn_change_password"
+        app:layout_constraintTop_toBottomOf="@id/settings_btn_change_email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/settings_btns">
+        <TextView
+            android:id="@+id/settings_password"
+            app:layout_constraintTop_toTopOf="@id/settings_btn_change_password"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Пароль"
+            style="@style/normalText" />
+        <TextView
+            android:id="@+id/settings_label_password"
+            app:layout_constraintTop_toBottomOf="@id/settings_password"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Нажмите чтобы изменить пароль"
+            style="@style/smallText" />
+        <View
+            app:layout_constraintTop_toBottomOf="@id/settings_label_password"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/separator" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/settings_change_photo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="@dimen/app_margin"
+        android:src="@drawable/ic_add_photo"
+        app:civ_border_width="8dp"
+        app:civ_border_color="@color/material_drawer_primary"
+        app:civ_circle_background_color="@color/material_drawer_primary"
+        app:layout_constraintBottom_toBottomOf="@+id/settings_header_block"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_header_block" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,17 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pawka.trellocloneapp.data.UserRepositoryImpl
-import com.pawka.trellocloneapp.domain.user.use_cases.GetCurrentUserIdUseCase
+import com.pawka.trellocloneapp.domain.user.use_cases.GetCurrentUserDataUseCase
 import com.pawka.trellocloneapp.domain.user.use_cases.SignUpUserUseCase
+import com.pawka.trellocloneapp.utils.Constants.parseString
 
 class SignUpViewModel : ViewModel() {
 
     private val repository = UserRepositoryImpl
 
     private val signUpUserUseCase = SignUpUserUseCase(repository)
-    private val getCurrentUserIdUseCase = GetCurrentUserIdUseCase(repository)
+    private val getCurrentUserDataUseCase = GetCurrentUserDataUseCase(repository)
 
-    val currentFirebaseUid = getCurrentUserIdUseCase.getCurrentUserId()
+    val currentUserData = getCurrentUserDataUseCase.getCurrentUserData()
 
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>
@@ -53,10 +54,6 @@ class SignUpViewModel : ViewModel() {
             result = false
         }
         return result
-    }
-
-    private fun parseString(string: String?): String {
-        return string?.trim() ?: ""
     }
 
     fun resetErrorInputName() {

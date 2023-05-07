@@ -1,10 +1,20 @@
 <resources>
-    <string name="app_name">S-STROY</string>
+    <string name="app_name">Саксэс-менеджер</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="error_input_name">Invalid name</string>
-    <string name="error_input_email">Invalid email</string>
-    <string name="error_input_password">Invalid password</string>
+    <string name="error_input_name">Недопустимое имя</string>
+    <string name="error_input_email">Недопустимая почта</string>
+    <string name="error_input_password">Недопустимый пароль</string>
 
-    <string name="add_new_board">Add new board</string>
+    <string name="add_new_board">Добавить доску</string>
+    <string name="sign_up_text">Введите свое имя, почту и пароль чтобы зарегестрироваться</string>
+    <string name="sign_in_text">Введите свою почту и пароль чтобы войти</string>
+    <string name="email">Почта</string>
+    <string name="password">Пароль</string>
+    <string name="sign_in_btn_text">Войти</string>
+    <string name="name">Имя</string>
+    <string name="sign_up_btn_text">Зарегестрироваться</string>
+    <string name="boards_available_text">Нет достпуных досок</string>
+    <string name="settings_menu_change_name">Изменить имя</string>
+    <string name="settings_menu_exit">Выйти</string>
 </resources>

@@ -15,6 +15,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.utils.Constants
+import com.pawka.trellocloneapp.utils.Constants.APP_ACTIVITY
+import com.pawka.trellocloneapp.utils.Constants.NAV_CONTROLLER
 
 class SignUpFragment : Fragment() {
 
@@ -55,8 +57,8 @@ class SignUpFragment : Fragment() {
     }
 
     private fun configureToolbar() {
-        Constants.APP_ACTIVITY.toolbar.visibility = View.VISIBLE
-        Constants.APP_ACTIVITY.toolbar.title = "SIGN UP"
+        APP_ACTIVITY.toolbar.visibility = View.VISIBLE
+        APP_ACTIVITY.toolbar.title = "Регистрация"
     }
 
     private fun observeViewModel() {
@@ -81,12 +83,13 @@ class SignUpFragment : Fragment() {
                 null
             }
         }
-        viewModel.currentFirebaseUid.observe(viewLifecycleOwner) {
-            if (it != "") {
+        viewModel.currentUserData.observe(viewLifecycleOwner) {
+            if (it != null && it.id != "error") {
                 Toast.makeText(layoutView.context, "Регистрация пройдена успешно", Toast.LENGTH_SHORT)
                     .show()
-                findNavController().navigate(R.id.action_signUpFragment_to_boardsFragment)
-            } else {
+                NAV_CONTROLLER.navigate(R.id.action_signUpFragment_to_boardsFragment)
+            }
+            if (it?.id == "error") {
                 Toast.makeText(layoutView.context, "Попробуй еще раз", Toast.LENGTH_SHORT)
                     .show()
             }
