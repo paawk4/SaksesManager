@@ -13,10 +13,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.pawka.trellocloneapp.R
+import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 
-class SignInFragment : Fragment() {
+class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
     private lateinit var viewModel: SignInViewModel
 
@@ -28,13 +29,6 @@ class SignInFragment : Fragment() {
     private lateinit var etPassword: EditText
     private lateinit var btnSignIn: Button
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_sign_in, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[SignInViewModel::class.java]
@@ -44,11 +38,14 @@ class SignInFragment : Fragment() {
         configureToolbar()
 
         btnSignIn.setOnClickListener {
+            showProgressDialog()
             viewModel.signInUser(etEmail.text.toString(), etPassword.text.toString()) { isSignIn ->
+                hideProgressDialog()
                 if (isSignIn) {
                     Toast.makeText(layoutView.context, "Вход выполнен успешно", Toast.LENGTH_SHORT)
                         .show()
                     NAV_CONTROLLER.navigate(R.id.action_signInFragment_to_boardsFragment)
+
                 } else {
                     Toast.makeText(layoutView.context, "Попробуй еще раз", Toast.LENGTH_SHORT)
                         .show()

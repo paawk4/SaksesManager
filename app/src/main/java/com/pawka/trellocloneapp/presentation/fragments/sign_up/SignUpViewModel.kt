@@ -33,6 +33,8 @@ class SignUpViewModel : ViewModel() {
 
         if (validateInput(name, email, password)) {
             signUpUserUseCase.signUpUser(name, email, password, callback)
+        } else {
+            callback(false)
         }
     }
 

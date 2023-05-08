@@ -7,34 +7,46 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.domain.board.Board
+import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
+import com.pawka.trellocloneapp.presentation.fragments.create_board.CreateBoardViewModel
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 
-class BoardsFragment : Fragment() {
+class BoardsFragment : BaseFragment(R.layout.fragment_boards) {
 
     private lateinit var boardsListRv: RecyclerView
     private lateinit var noBoardsTv: TextView
     private lateinit var createBoardBtn: FloatingActionButton
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_boards, container, false)
-    }
+    private lateinit var viewModel: BoardsViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[BoardsViewModel::class.java]
+        showProgressDialog()
         initViews(view)
         configureToolbar()
+        observeViewModel()
+
 
         createBoardBtn.setOnClickListener {
             NAV_CONTROLLER.navigate(R.id.action_boardsFragment_to_createBoardFragment)
+        }
+
+
+    }
+
+    private fun observeViewModel() {
+        viewModel.boardsListLiveData.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()){
+                populateBoardsToUI(it)
+            }
         }
     }
 
@@ -53,7 +65,8 @@ class BoardsFragment : Fragment() {
         APP_ACTIVITY.toolbar.setTitleTextColor(Color.WHITE)
     }
 
-    fun populateBoardsToUI(boardsList: ArrayList<Board>) {
+    private fun populateBoardsToUI(boardsList: ArrayList<Board>) {
+        hideProgressDialog()
         if (boardsList.size > 0) {
             boardsListRv.visibility = View.VISIBLE
             noBoardsTv.visibility = View.GONE

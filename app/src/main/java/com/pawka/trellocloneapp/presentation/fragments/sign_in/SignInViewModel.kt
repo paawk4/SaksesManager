@@ -26,6 +26,8 @@ class SignInViewModel : ViewModel() {
         val password = parseString(inputPassword)
         if (validateInput(email, password)) {
             signInUserUseCase.signInUser(email, password, callback)
+        } else {
+            callback(false)
         }
     }
 

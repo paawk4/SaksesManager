@@ -9,23 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.pawka.trellocloneapp.R
+import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 
-class StartFragment : Fragment() {
+class StartFragment : BaseFragment(R.layout.fragment_start) {
 
     private lateinit var viewModel: StartViewModel
 
     private lateinit var signInBtn: Button
     private lateinit var signUpBtn: Button
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        return inflater.inflate(R.layout.fragment_start, container, false)
-    }
 
     private fun configureToolbar() {
         APP_ACTIVITY.toolbar.visibility = View.GONE

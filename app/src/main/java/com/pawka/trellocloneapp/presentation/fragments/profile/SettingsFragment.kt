@@ -9,10 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.pawka.trellocloneapp.R
+import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import de.hdodenhof.circleimageview.CircleImageView
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
 
     private lateinit var viewModel: SettingsViewModel
     private lateinit var emailTv: TextView
@@ -20,15 +21,9 @@ class SettingsFragment : Fragment() {
     private lateinit var photoIv: CircleImageView
     private lateinit var changePhotoBtn: CircleImageView
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_settings, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(APP_ACTIVITY)[SettingsViewModel::class.java]
         initFields(view)
         configureToolbar()
 
@@ -63,7 +58,6 @@ class SettingsFragment : Fragment() {
     }
 
     private fun initFields(view: View) {
-        viewModel = ViewModelProvider(APP_ACTIVITY)[SettingsViewModel::class.java]
         emailTv = view.findViewById(R.id.settings_email)
         nameTv = view.findViewById(R.id.settings_name)
         photoIv = view.findViewById(R.id.settings_user_photo)

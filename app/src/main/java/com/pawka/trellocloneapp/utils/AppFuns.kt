@@ -1,8 +1,10 @@
 package com.pawka.trellocloneapp.utils
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.view.inputmethod.InputMethodManager
+import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.presentation.MainActivity
 
 fun hideKeyboard() {

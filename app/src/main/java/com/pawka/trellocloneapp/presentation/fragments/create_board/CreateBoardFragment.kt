@@ -12,11 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.pawka.trellocloneapp.R
+import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 import de.hdodenhof.circleimageview.CircleImageView
 
-class CreateBoardFragment : Fragment() {
+class CreateBoardFragment : BaseFragment(R.layout.fragment_create_board) {
 
     private lateinit var viewModel: CreateBoardViewModel
 
@@ -24,13 +25,6 @@ class CreateBoardFragment : Fragment() {
     private lateinit var nameBoardTil: TextInputLayout
     private lateinit var nameBoardEt: TextInputEditText
     private lateinit var imageBoardIv: CircleImageView
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_create_board, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

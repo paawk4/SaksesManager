@@ -31,10 +31,6 @@ open class BoardsListAdapter(private var list: ArrayList<Board>) :
         val model = list[position]
 
         if (holder is MyViewHolder) {
-            val regularFont: Typeface =
-                Typeface.createFromAsset(holder.itemView.context.assets, "Raleway-Regular.ttf")
-            val boldFont: Typeface =
-                Typeface.createFromAsset(holder.itemView.context.assets, "Raleway-Bold.ttf")
 
             Glide
                 .with(APP_ACTIVITY)
@@ -46,8 +42,6 @@ open class BoardsListAdapter(private var list: ArrayList<Board>) :
             val boardName = holder.itemView.findViewById<TextView>(R.id.item_board_name_tv)
             val boardCreatedBy =
                 holder.itemView.findViewById<TextView>(R.id.item_board_created_by_tv)
-            boardName.typeface = boldFont
-            boardCreatedBy.typeface = regularFont
             //set text
             boardName.text = model.name
             boardCreatedBy.text = "Создан: " + model.createdBy

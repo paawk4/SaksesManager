@@ -13,10 +13,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.pawka.trellocloneapp.R
+import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 
-class SignUpFragment : Fragment() {
+class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
 
     private lateinit var viewModel: SignUpViewModel
 
@@ -30,13 +31,6 @@ class SignUpFragment : Fragment() {
     private lateinit var etPassword: EditText
     private lateinit var btnSignUp: Button
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_sign_up, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
@@ -46,11 +40,13 @@ class SignUpFragment : Fragment() {
         configureToolbar()
 
         btnSignUp.setOnClickListener {
+            showProgressDialog()
             viewModel.signUpUser(
                 etName.text.toString(),
                 etEmail.text.toString(),
                 etPassword.text.toString()
             ) {isSignUp ->
+                hideProgressDialog()
                 if (isSignUp) {
                     Toast.makeText(
                         layoutView.context,
