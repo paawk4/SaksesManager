@@ -1,21 +1,15 @@
 package com.pawka.trellocloneapp.presentation.fragments.profile
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuBuilder
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.pawka.trellocloneapp.R
-import com.pawka.trellocloneapp.utils.Constants.APP_ACTIVITY
-import com.pawka.trellocloneapp.utils.Constants.NAV_CONTROLLER
+import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import de.hdodenhof.circleimageview.CircleImageView
 
 class SettingsFragment : Fragment() {

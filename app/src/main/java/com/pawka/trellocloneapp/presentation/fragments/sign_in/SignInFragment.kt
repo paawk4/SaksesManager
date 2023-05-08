@@ -1,6 +1,5 @@
 package com.pawka.trellocloneapp.presentation.fragments.sign_in
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,12 +11,10 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.pawka.trellocloneapp.R
-import com.pawka.trellocloneapp.utils.Constants
-import com.pawka.trellocloneapp.utils.Constants.APP_ACTIVITY
-import com.pawka.trellocloneapp.utils.Constants.NAV_CONTROLLER
+import com.pawka.trellocloneapp.utils.APP_ACTIVITY
+import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 
 class SignInFragment : Fragment() {
 
@@ -47,7 +44,16 @@ class SignInFragment : Fragment() {
         configureToolbar()
 
         btnSignIn.setOnClickListener {
-            viewModel.signInUser(etEmail.text.toString(), etPassword.text.toString())
+            viewModel.signInUser(etEmail.text.toString(), etPassword.text.toString()) { isSignIn ->
+                if (isSignIn) {
+                    Toast.makeText(layoutView.context, "Вход выполнен успешно", Toast.LENGTH_SHORT)
+                        .show()
+                    NAV_CONTROLLER.navigate(R.id.action_signInFragment_to_boardsFragment)
+                } else {
+                    Toast.makeText(layoutView.context, "Попробуй еще раз", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
         }
     }
 
@@ -110,16 +116,6 @@ class SignInFragment : Fragment() {
                 getString(R.string.error_input_password)
             } else {
                 null
-            }
-        }
-        viewModel.currentUserData.observe(viewLifecycleOwner) {
-            if (it != null && it.id != "error") {
-                Toast.makeText(layoutView.context, "Вход выполнен успешно", Toast.LENGTH_SHORT).show()
-                NAV_CONTROLLER.navigate(R.id.action_signInFragment_to_boardsFragment)
-            }
-            if (it?.id == "error") {
-                Toast.makeText(layoutView.context, "Попробуй еще раз", Toast.LENGTH_SHORT)
-                    .show()
             }
         }
     }

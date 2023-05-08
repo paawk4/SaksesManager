@@ -6,16 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.pawka.trellocloneapp.data.UserRepositoryImpl
 import com.pawka.trellocloneapp.domain.user.use_cases.GetCurrentUserDataUseCase
 import com.pawka.trellocloneapp.domain.user.use_cases.SignUpUserUseCase
-import com.pawka.trellocloneapp.utils.Constants.parseString
+import com.pawka.trellocloneapp.utils.parseString
 
 class SignUpViewModel : ViewModel() {
 
     private val repository = UserRepositoryImpl
 
     private val signUpUserUseCase = SignUpUserUseCase(repository)
-    private val getCurrentUserDataUseCase = GetCurrentUserDataUseCase(repository)
-
-    val currentUserData = getCurrentUserDataUseCase.getCurrentUserData()
 
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>
@@ -29,17 +26,17 @@ class SignUpViewModel : ViewModel() {
     val errorInputPassword: LiveData<Boolean>
         get() = _errorInputPassword
 
-    fun signUpUser(inputName: String,inputEmail: String, inputPassword: String) {
+    fun signUpUser(inputName: String, inputEmail: String, inputPassword: String, callback: (isSignUp: Boolean) -> Unit) {
         val name = parseString(inputName)
         val email = parseString(inputEmail)
         val password = parseString(inputPassword)
 
         if (validateInput(name, email, password)) {
-            signUpUserUseCase.signUpUser(name, email, password)
+            signUpUserUseCase.signUpUser(name, email, password, callback)
         }
     }
 
-    private fun validateInput(name:String, email: String, password: String): Boolean {
+    private fun validateInput(name: String, email: String, password: String): Boolean {
         var result = true
         if (name.isBlank()) {
             _errorInputName.value = true

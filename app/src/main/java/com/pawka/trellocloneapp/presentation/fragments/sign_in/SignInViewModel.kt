@@ -4,18 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pawka.trellocloneapp.data.UserRepositoryImpl
-import com.pawka.trellocloneapp.domain.user.use_cases.GetCurrentUserDataUseCase
 import com.pawka.trellocloneapp.domain.user.use_cases.SignInUserUseCase
-import com.pawka.trellocloneapp.utils.Constants.parseString
+import com.pawka.trellocloneapp.utils.parseString
 
 class SignInViewModel : ViewModel() {
 
     private val repository = UserRepositoryImpl
 
     private val signInUserUseCase = SignInUserUseCase(repository)
-    private val getCurrentUserDataUseCase = GetCurrentUserDataUseCase(repository)
-
-    val currentUserData = getCurrentUserDataUseCase.getCurrentUserData()
 
     private val _errorInputEmail = MutableLiveData<Boolean>()
     val errorInputEmail: LiveData<Boolean>
@@ -25,13 +21,12 @@ class SignInViewModel : ViewModel() {
     val errorInputPassword: LiveData<Boolean>
         get() = _errorInputPassword
 
-    fun signInUser(inputEmail: String, inputPassword: String) {
+    fun signInUser(inputEmail: String, inputPassword: String, callback: (isSignIn: Boolean) -> Unit) {
         val email = parseString(inputEmail)
         val password = parseString(inputPassword)
         if (validateInput(email, password)) {
-            signInUserUseCase.signInUser(email, password)
+            signInUserUseCase.signInUser(email, password, callback)
         }
-
     }
 
     private fun validateInput(email: String, password: String): Boolean {

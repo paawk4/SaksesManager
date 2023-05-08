@@ -5,7 +5,7 @@ import com.pawka.trellocloneapp.domain.board.BoardRepository
 
 class CreateBoardUseCase(private val boardRepository: BoardRepository) {
 
-    fun createBoard(board: Board) {
-        return boardRepository.createBoard(board)
+    fun createBoard(board: Board, callback: () -> Unit) {
+        return boardRepository.createBoard(board, callback)
     }
 }

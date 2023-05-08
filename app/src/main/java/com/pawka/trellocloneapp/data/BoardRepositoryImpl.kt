@@ -3,6 +3,8 @@ package com.pawka.trellocloneapp.data
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.pawka.trellocloneapp.domain.board.Board
 import com.pawka.trellocloneapp.domain.board.BoardRepository
 
@@ -10,14 +12,10 @@ object BoardRepositoryImpl: BoardRepository {
 
     private val boardsListLiveData = MutableLiveData<ArrayList<Board>>()
     private const val BOARDS = "boards"
+    private val boardFireStoreHandler = BoardFireStoreHandler()
 
-    private val db = FirebaseDatabase.getInstance(UserRepositoryImpl.DB_URL).reference.child(BOARDS)
-
-    override fun createBoard(board: Board) {
-        db.child(board.name).setValue(board)
-            .addOnFailureListener {
-                Log.d("Register", "writeUserToDatabase failed\n ${it.message}")
-            }
+    override fun createBoard(board: Board, callback: () -> Unit) {
+        boardFireStoreHandler.createBoard(board, callback)
     }
 
     override fun getBoardDetails(boardId: String) {
@@ -34,5 +32,21 @@ object BoardRepositoryImpl: BoardRepository {
 
     override fun changeBoardDetails() {
         TODO("Not yet implemented")
+    }
+
+    class BoardFireStoreHandler {
+
+        private val mFireStore = FirebaseFirestore.getInstance()
+
+        fun createBoard(boardInfo : Board, callback: () -> Unit){
+            mFireStore.collection(BOARDS)
+                .document()
+                .set(boardInfo, SetOptions.merge())
+                .addOnSuccessListener {
+                    callback()
+                }.addOnFailureListener {
+                    Log.d("Boards", "create board failed ${it.message}")
+                }
+        }
     }
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 
 interface BoardRepository {
 
-    fun createBoard(board: Board)
+    fun createBoard(board: Board, callback: () -> Unit)
 
     fun getBoardDetails(boardId: String)
 

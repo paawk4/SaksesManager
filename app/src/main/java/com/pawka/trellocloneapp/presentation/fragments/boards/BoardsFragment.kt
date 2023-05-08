@@ -2,19 +2,18 @@ package com.pawka.trellocloneapp.presentation.fragments.boards
 
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.domain.board.Board
-import com.pawka.trellocloneapp.utils.Constants.APP_ACTIVITY
-import com.pawka.trellocloneapp.utils.Constants.NAV_CONTROLLER
+import com.pawka.trellocloneapp.utils.APP_ACTIVITY
+import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 
 class BoardsFragment : Fragment() {
 

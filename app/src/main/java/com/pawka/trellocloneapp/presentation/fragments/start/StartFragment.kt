@@ -9,10 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.pawka.trellocloneapp.R
-import com.pawka.trellocloneapp.presentation.app_drawer.AppDrawerViewModel
-import com.pawka.trellocloneapp.utils.Constants
-import com.pawka.trellocloneapp.utils.Constants.APP_ACTIVITY
-import com.pawka.trellocloneapp.utils.Constants.NAV_CONTROLLER
+import com.pawka.trellocloneapp.utils.APP_ACTIVITY
+import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 
 class StartFragment : Fragment() {
 
@@ -25,6 +23,7 @@ class StartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         return inflater.inflate(R.layout.fragment_start, container, false)
     }
 

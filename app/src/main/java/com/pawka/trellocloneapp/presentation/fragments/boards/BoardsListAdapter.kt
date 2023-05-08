@@ -1,6 +1,5 @@
 package com.pawka.trellocloneapp.presentation.fragments.boards
 
-import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.domain.board.Board
-import com.pawka.trellocloneapp.utils.Constants.APP_ACTIVITY
+import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 
-open class BoardsListAdapter(private var list : ArrayList<Board>)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+open class BoardsListAdapter(private var list: ArrayList<Board>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var onClickListener: OnClickListener? = null
 
@@ -45,7 +44,8 @@ open class BoardsListAdapter(private var list : ArrayList<Board>)
                 .into(holder.itemView.findViewById(R.id.item_board_iv))
             //set fonts
             val boardName = holder.itemView.findViewById<TextView>(R.id.item_board_name_tv)
-            val boardCreatedBy = holder.itemView.findViewById<TextView>(R.id.item_board_created_by_tv)
+            val boardCreatedBy =
+                holder.itemView.findViewById<TextView>(R.id.item_board_created_by_tv)
             boardName.typeface = boldFont
             boardCreatedBy.typeface = regularFont
             //set text

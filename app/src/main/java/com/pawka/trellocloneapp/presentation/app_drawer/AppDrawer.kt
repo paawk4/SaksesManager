@@ -19,12 +19,9 @@ import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.domain.user.User
-import com.pawka.trellocloneapp.presentation.fragments.sign_up.SignUpViewModel
-import com.pawka.trellocloneapp.utils.Constants
-import com.pawka.trellocloneapp.utils.Constants.APP_ACTIVITY
-import com.pawka.trellocloneapp.utils.Constants.NAV_CONTROLLER
-import com.pawka.trellocloneapp.utils.Constants.hideKeyboard
-import com.pawka.trellocloneapp.utils.Constants.restartActivity
+import com.pawka.trellocloneapp.utils.APP_ACTIVITY
+import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
+import com.pawka.trellocloneapp.utils.hideKeyboard
 
 class AppDrawer {
 

@@ -3,19 +3,17 @@ package com.pawka.trellocloneapp.presentation.fragments.create_board
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.pawka.trellocloneapp.R
-import com.pawka.trellocloneapp.presentation.fragments.sign_in.SignInViewModel
-import com.pawka.trellocloneapp.utils.Constants
-import com.pawka.trellocloneapp.utils.Constants.APP_ACTIVITY
+import com.pawka.trellocloneapp.utils.APP_ACTIVITY
+import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 import de.hdodenhof.circleimageview.CircleImageView
 
 class CreateBoardFragment : Fragment() {
@@ -44,7 +42,9 @@ class CreateBoardFragment : Fragment() {
         observeViewModel()
 
         createBoardBtn.setOnClickListener {
-            viewModel.createBoard(nameBoardEt.text.toString())
+            viewModel.createBoard(nameBoardEt.text.toString()) {
+                NAV_CONTROLLER.popBackStack()
+            }
         }
     }
 
