@@ -49,6 +49,9 @@
         <action
             android:id="@+id/action_boardsFragment_to_createBoardFragment"
             app:destination="@id/createBoardFragment" />
+        <action
+            android:id="@+id/action_boardsFragment_to_taskListFragment"
+            app:destination="@id/taskListFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -59,4 +62,27 @@
         android:name="com.pawka.trellocloneapp.presentation.fragments.create_board.CreateBoardFragment"
         android:label="fragment_create_board"
         tools:layout="@layout/fragment_create_board" />
+    <fragment
+        android:id="@+id/taskListFragment"
+        android:name="com.pawka.trellocloneapp.presentation.fragments.task_list.TaskListFragment"
+        android:label="fragment_task_list"
+        tools:layout="@layout/fragment_task_list" >
+        <argument
+            android:name="boardId"
+            app:argType="string"
+            android:defaultValue='""' />
+        <action
+            android:id="@+id/action_taskListFragment_to_membersFragment"
+            app:destination="@id/membersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/membersFragment"
+        android:name="com.pawka.trellocloneapp.presentation.fragments.members.MembersFragment"
+        android:label="fragment_members"
+        tools:layout="@layout/fragment_members" >
+        <argument
+            android:name="boardId"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
 </navigation>

@@ -6,6 +6,5 @@
         android:icon="@drawable/ic_check_done"
         android:title=""
         app:showAsAction="ifRoom">
-
     </item>
 </menu>

@@ -1,16 +1,17 @@
 package com.pawka.trellocloneapp.presentation.fragments.profile
 
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
+import com.pawka.trellocloneapp.utils.restartActivity
 import de.hdodenhof.circleimageview.CircleImageView
 
 class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
@@ -24,25 +25,13 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(APP_ACTIVITY)[SettingsViewModel::class.java]
+        setHasOptionsMenu(true)
         initFields(view)
         configureToolbar()
-
+        observeViewModel()
     }
 
-    private fun configureToolbar() {
-        APP_ACTIVITY.toolbar.title = "Настройки"
-        APP_ACTIVITY.toolbar.inflateMenu(R.menu.settings_action_menu)
-        APP_ACTIVITY.appDrawer.disableDrawer()
-        APP_ACTIVITY.toolbar.setNavigationIcon(R.drawable.ic_back)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        outputDataToTheUi()
-
-    }
-
-    private fun outputDataToTheUi() {
+    private fun observeViewModel() {
         viewModel.currentUserLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
                 emailTv.text = it.email
@@ -57,6 +46,11 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
         }
     }
 
+    private fun configureToolbar() {
+        APP_ACTIVITY.toolbar.title = "Настройки"
+        APP_ACTIVITY.appDrawer.disableDrawer()
+        APP_ACTIVITY.toolbar.setNavigationIcon(R.drawable.ic_back)
+    }
     private fun initFields(view: View) {
         emailTv = view.findViewById(R.id.settings_email)
         nameTv = view.findViewById(R.id.settings_name)
@@ -64,8 +58,19 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
         changePhotoBtn = view.findViewById(R.id.settings_change_photo)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        APP_ACTIVITY.toolbar.menu.clear()
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.settings_action_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.settings_menu_exit -> {
+                viewModel.signOut()
+                restartActivity()
+            }
+
+            R.id.settings_menu_change_name -> println()
+        }
+        return true
     }
 }

@@ -25,7 +25,7 @@ import com.pawka.trellocloneapp.utils.hideKeyboard
 
 class AppDrawer {
 
-    private lateinit var viewModel: AppDrawerViewModel
+    lateinit var viewModel: AppDrawerViewModel
 
     private var currentUser = User()
 
@@ -36,7 +36,6 @@ class AppDrawer {
 
     fun create() {
         viewModel = ViewModelProvider(APP_ACTIVITY)[AppDrawerViewModel::class.java]
-        initLoader()
         createHeader()
         createDrawer()
         mDrawerLayout = mDrawer.drawerLayout
@@ -57,11 +56,12 @@ class AppDrawer {
         mDrawer.actionBarDrawerToggle?.isDrawerIndicatorEnabled = true
         APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(false)
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        APP_ACTIVITY.toolbar.setNavigationIcon(R.drawable.ic_navigation_menu)
         APP_ACTIVITY.toolbar.setNavigationOnClickListener {
             mDrawer.openDrawer()
         }
         viewModel.currentUserData.observe(APP_ACTIVITY) {
-            if (it != null && it.id != "error") {
+            if (it != null) {
                 currentUser = it
                 updateHeader()
             } else {
@@ -128,17 +128,5 @@ class AppDrawer {
             .withEmail(currentUser.email)
             .withIcon(currentUser.image)
         mHeader.updateProfile(mCurrentProfile)
-    }
-
-    private fun initLoader() {
-        DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
-            override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable) {
-                Glide
-                    .with(APP_ACTIVITY)
-                    .load(uri)
-                    .centerCrop()
-                    .into(imageView)
-            }
-        })
     }
 }

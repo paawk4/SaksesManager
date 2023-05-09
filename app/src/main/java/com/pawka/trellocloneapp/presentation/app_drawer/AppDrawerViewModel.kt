@@ -6,7 +6,7 @@ import com.pawka.trellocloneapp.domain.user.use_cases.GetCurrentUserDataUseCase
 import com.pawka.trellocloneapp.domain.user.use_cases.SignOutUserUseCase
 import com.pawka.trellocloneapp.utils.restartActivity
 
-class AppDrawerViewModel: ViewModel() {
+class AppDrawerViewModel : ViewModel() {
     private val repository = UserRepositoryImpl
 
     private val getCurrentUserDataUseCase = GetCurrentUserDataUseCase(repository)

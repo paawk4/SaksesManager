@@ -31,14 +31,12 @@ open class BoardsListAdapter(private var list: ArrayList<Board>) :
         val model = list[position]
 
         if (holder is MyViewHolder) {
-
             Glide
                 .with(APP_ACTIVITY)
                 .load(model.image)
                 .centerCrop()
                 .placeholder(R.drawable.ic_board_place_holder)
                 .into(holder.itemView.findViewById(R.id.item_board_iv))
-            //set fonts
             val boardName = holder.itemView.findViewById<TextView>(R.id.item_board_name_tv)
             val boardCreatedBy =
                 holder.itemView.findViewById<TextView>(R.id.item_board_created_by_tv)

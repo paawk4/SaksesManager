@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Please wait..."
+        android:text="Загрузка..."
         android:textSize="16sp"
         android:textColor="@color/primary_text_color"
         android:id="@+id/progress_dialog_tv"/>

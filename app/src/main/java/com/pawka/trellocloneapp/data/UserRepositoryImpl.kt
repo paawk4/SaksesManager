@@ -6,20 +6,29 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.pawka.trellocloneapp.domain.board.Board
 import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.domain.user.UserRepository
 
 object UserRepositoryImpl : UserRepository {
 
     private val currentUserLiveData = MutableLiveData<User?>()
+    private val assignedMembersListLiveData = MutableLiveData<ArrayList<User>>()
 
-    const val USERS: String = "users"
+    private const val USERS: String = "users"
+    private const val ID: String = "id"
+    private const val EMAIL: String = "email"
 
     private val auth = FirebaseAuth.getInstance()
 
     private val userFireStoreHandler = UserFireStoreHandler()
 
-    override fun signUpUser(name: String, login: String, password: String, callback: (isSignUp: Boolean) -> Unit) {
+    override fun signUpUser(
+        name: String,
+        login: String,
+        password: String,
+        callback: (isSignUp: Boolean) -> Unit
+    ) {
         auth.createUserWithEmailAndPassword(login, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -34,7 +43,11 @@ object UserRepositoryImpl : UserRepository {
             }
     }
 
-    override fun signInUser(email: String, password: String, callback: (isSignIn: Boolean) -> Unit) {
+    override fun signInUser(
+        email: String,
+        password: String,
+        callback: (isSignIn: Boolean) -> Unit
+    ) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                 callback(true)
@@ -64,6 +77,17 @@ object UserRepositoryImpl : UserRepository {
         return auth.currentUser
     }
 
+    override fun getAssignedMembersList(
+        assignedTo: ArrayList<String>
+    ): MutableLiveData<ArrayList<User>> {
+        userFireStoreHandler.getAssignedMembersList(assignedTo)
+        return assignedMembersListLiveData
+    }
+
+    override fun getMemberDetails(email: String, callback: (User) -> Unit) {
+        userFireStoreHandler.getMemberDetails(email, callback)
+    }
+
     override fun editUserData(name: String, login: String, password: String) {
 
     }
@@ -88,7 +112,7 @@ object UserRepositoryImpl : UserRepository {
 
         fun loadUserData() {
             val currentUserId = getCurrentUserId()
-            currentUserId?.let {id ->
+            currentUserId?.let { id ->
                 db.document(id)
                     .get()
                     .addOnSuccessListener { document ->
@@ -99,6 +123,34 @@ object UserRepositoryImpl : UserRepository {
                         Log.d("Register", "loadUserData() failed\n ${it.message}")
                     }
             }
+        }
+
+        fun getAssignedMembersList(assignedTo: ArrayList<String>) {
+            db.whereIn(ID, assignedTo)
+                .get()
+                .addOnSuccessListener { document ->
+                    val usersList: ArrayList<User> = ArrayList()
+
+                    for (i in document.documents) {
+                        val user = i.toObject(User::class.java)!!
+                        usersList.add(user)
+                    }
+
+                    assignedMembersListLiveData.value = usersList
+                }
+        }
+
+        fun getMemberDetails(email: String, callback: (User) -> Unit) {
+            db.whereEqualTo(EMAIL, email)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.documents.size > 0) {
+                        val user = document.documents[0].toObject(User::class.java)!!
+                        callback(user)
+                    } else {
+                        callback(User())
+                    }
+                }
         }
     }
 }

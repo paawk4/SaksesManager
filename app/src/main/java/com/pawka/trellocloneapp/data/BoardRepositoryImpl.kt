@@ -2,12 +2,13 @@ package com.pawka.trellocloneapp.data
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.pawka.trellocloneapp.data.UserRepositoryImpl.getCurrentUserId
 import com.pawka.trellocloneapp.domain.board.Board
 import com.pawka.trellocloneapp.domain.board.BoardRepository
+import com.pawka.trellocloneapp.domain.user.User
+import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 
 object BoardRepositoryImpl : BoardRepository {
 
@@ -22,8 +23,8 @@ object BoardRepositoryImpl : BoardRepository {
         boardFireStoreHandler.createBoard(board, callback)
     }
 
-    override fun getBoardDetails(boardId: String) {
-        TODO("Not yet implemented")
+    override fun getBoardDetails(boardId: String, callback: (Board) -> Unit) {
+        boardFireStoreHandler.getBoardDetails(boardId, callback)
     }
 
     override fun getBoardsList(): MutableLiveData<ArrayList<Board>> {
@@ -37,6 +38,10 @@ object BoardRepositoryImpl : BoardRepository {
 
     override fun changeBoardDetails() {
         TODO("Not yet implemented")
+    }
+
+    override fun assignMemberToBoard(board: Board, callback: () -> Unit) {
+        boardFireStoreHandler.assignMemberToBoard(board, callback)
     }
 
     class BoardFireStoreHandler {
@@ -70,11 +75,36 @@ object BoardRepositoryImpl : BoardRepository {
                             boardsList.add(board);
                         }
                         boardsListLiveData.value = boardsList
-                    }.addOnFailureListener {
-                        //activity.hideProgressDialog()
                     }
             }
 
+        }
+
+        fun getBoardDetails(boardId: String, callback: (Board) -> Unit) {
+            mFireStore.collection(BOARDS)
+                .document(boardId)
+                .get()
+                .addOnSuccessListener { document ->
+                    Log.e("getBoardDetails", document.toString())
+                    val board = document.toObject(Board::class.java)!!
+                    board.documentID = document.id
+                    callback(board)
+                }
+        }
+
+        fun assignMemberToBoard(board: Board, callback: () -> Unit) {
+            val assignedToHashMap = HashMap<String, Any>()
+            assignedToHashMap[ASSIGNED_TO] = board.assignedTo
+
+            mFireStore.collection(BOARDS)
+                .document(board.documentID)
+                .update(assignedToHashMap)
+                .addOnSuccessListener {
+                    callback()
+                }
+                .addOnFailureListener { e ->
+                    Log.e(APP_ACTIVITY.javaClass.simpleName, "Error while creating a board", e)
+                }
         }
     }
 }

@@ -38,13 +38,11 @@ class BoardsFragment : BaseFragment(R.layout.fragment_boards) {
         createBoardBtn.setOnClickListener {
             NAV_CONTROLLER.navigate(R.id.action_boardsFragment_to_createBoardFragment)
         }
-
-
     }
 
     private fun observeViewModel() {
         viewModel.boardsListLiveData.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()){
+            if (it.isNotEmpty()) {
                 populateBoardsToUI(it)
             }
         }
@@ -79,9 +77,9 @@ class BoardsFragment : BaseFragment(R.layout.fragment_boards) {
 
             adapter.setOnClickListener(object : BoardsListAdapter.OnClickListener {
                 override fun onClick(position: Int, model: Board) {
-//                    val intent = Intent(this@MainActivity, TaskListActivity::class.java)
-//                    intent.putExtra(Constants.DOCUMENT_ID, model.documentID)
-//                    startActivity(intent)
+                    val bundle = Bundle()
+                    bundle.putString("boardId", model.documentID)
+                    NAV_CONTROLLER.navigate(R.id.action_boardsFragment_to_taskListFragment, bundle)
                 }
             })
         } else {

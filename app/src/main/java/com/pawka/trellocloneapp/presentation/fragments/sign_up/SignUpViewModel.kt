@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pawka.trellocloneapp.data.UserRepositoryImpl
-import com.pawka.trellocloneapp.domain.user.use_cases.GetCurrentUserDataUseCase
 import com.pawka.trellocloneapp.domain.user.use_cases.SignUpUserUseCase
 import com.pawka.trellocloneapp.utils.parseString
 
@@ -26,7 +25,12 @@ class SignUpViewModel : ViewModel() {
     val errorInputPassword: LiveData<Boolean>
         get() = _errorInputPassword
 
-    fun signUpUser(inputName: String, inputEmail: String, inputPassword: String, callback: (isSignUp: Boolean) -> Unit) {
+    fun signUpUser(
+        inputName: String,
+        inputEmail: String,
+        inputPassword: String,
+        callback: (isSignUp: Boolean) -> Unit
+    ) {
         val name = parseString(inputName)
         val email = parseString(inputEmail)
         val password = parseString(inputPassword)

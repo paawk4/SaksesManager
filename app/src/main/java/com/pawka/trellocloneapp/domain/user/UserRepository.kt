@@ -12,9 +12,16 @@ interface UserRepository {
     fun signOutUser()
 
     fun getCurrentUserData(): MutableLiveData<User?>
+
     fun getCurrentUserId(): String?
 
     fun getCurrentFirebaseUser(): FirebaseUser?
+
+    fun getAssignedMembersList(
+        assignedTo: ArrayList<String>
+    ): MutableLiveData<ArrayList<User>>
+
+    fun getMemberDetails(email: String, callback: (User) -> Unit)
 
     fun editUserData(name: String, login: String, password: String)
 }

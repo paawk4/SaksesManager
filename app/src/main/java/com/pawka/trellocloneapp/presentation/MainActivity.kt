@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         APP_ACTIVITY = this
         initViews()
+        setSupportActionBar(toolbar)
     }
 
     private fun initViews() {
