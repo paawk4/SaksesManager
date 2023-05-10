@@ -37,8 +37,9 @@ class MembersFragment : BaseFragment(R.layout.fragment_members) {
         boardId?.let {
             viewModel.getBoardsDetails(boardId) {
                 boardDetails = it
-                viewModel.getAssignedMembersList(boardDetails.assignedTo)
-                observeViewModel()
+                viewModel.getAssignedMembersList(boardDetails.assignedTo) {
+                    observeViewModel()
+                }
                 configureToolbar()
             }
         }

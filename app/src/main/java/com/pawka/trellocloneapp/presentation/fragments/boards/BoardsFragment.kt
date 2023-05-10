@@ -42,6 +42,7 @@ class BoardsFragment : BaseFragment(R.layout.fragment_boards) {
 
     private fun observeViewModel() {
         viewModel.boardsListLiveData.observe(viewLifecycleOwner) {
+            hideProgressDialog()
             if (it.isNotEmpty()) {
                 populateBoardsToUI(it)
             }
@@ -64,7 +65,6 @@ class BoardsFragment : BaseFragment(R.layout.fragment_boards) {
     }
 
     private fun populateBoardsToUI(boardsList: ArrayList<Board>) {
-        hideProgressDialog()
         if (boardsList.size > 0) {
             boardsListRv.visibility = View.VISIBLE
             noBoardsTv.visibility = View.GONE

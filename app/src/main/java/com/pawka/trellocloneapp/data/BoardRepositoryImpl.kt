@@ -1,5 +1,6 @@
 package com.pawka.trellocloneapp.data
 
+import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
@@ -13,9 +14,11 @@ import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 object BoardRepositoryImpl : BoardRepository {
 
     private val boardsListLiveData = MutableLiveData<ArrayList<Board>>()
+    private val currentBoardLiveData = MutableLiveData<Board>()
 
     private const val BOARDS = "boards"
     private const val ASSIGNED_TO: String = "assignedTo"
+    private const val TASK_LIST: String = "taskList"
 
     private val boardFireStoreHandler = BoardFireStoreHandler()
 
@@ -23,8 +26,9 @@ object BoardRepositoryImpl : BoardRepository {
         boardFireStoreHandler.createBoard(board, callback)
     }
 
-    override fun getBoardDetails(boardId: String, callback: (Board) -> Unit) {
+    override fun getBoardDetails(boardId: String, callback: (Board) -> Unit): MutableLiveData<Board>{
         boardFireStoreHandler.getBoardDetails(boardId, callback)
+        return currentBoardLiveData
     }
 
     override fun getBoardsList(): MutableLiveData<ArrayList<Board>> {
@@ -42,6 +46,10 @@ object BoardRepositoryImpl : BoardRepository {
 
     override fun assignMemberToBoard(board: Board, callback: () -> Unit) {
         boardFireStoreHandler.assignMemberToBoard(board, callback)
+    }
+
+    override fun addUpdateTaskList(board: Board, callback: (Boolean) -> Unit) {
+        boardFireStoreHandler.addUpdateTaskList(board, callback)
     }
 
     class BoardFireStoreHandler {
@@ -88,6 +96,7 @@ object BoardRepositoryImpl : BoardRepository {
                     Log.e("getBoardDetails", document.toString())
                     val board = document.toObject(Board::class.java)!!
                     board.documentID = document.id
+                    currentBoardLiveData.value = board
                     callback(board)
                 }
         }
@@ -100,10 +109,29 @@ object BoardRepositoryImpl : BoardRepository {
                 .document(board.documentID)
                 .update(assignedToHashMap)
                 .addOnSuccessListener {
+                    currentBoardLiveData.value = board
                     callback()
                 }
                 .addOnFailureListener { e ->
                     Log.e(APP_ACTIVITY.javaClass.simpleName, "Error while creating a board", e)
+                }
+        }
+
+        fun addUpdateTaskList(board: Board, callback: (Boolean) -> Unit) {
+            val taskListHashMap = HashMap<String, Any>()
+            taskListHashMap[TASK_LIST] = board.taskList
+
+            mFireStore.collection(BOARDS)
+                .document(board.documentID)
+                .update(taskListHashMap)
+                .addOnSuccessListener {
+                    currentBoardLiveData.value = board
+                    Log.e(APP_ACTIVITY.javaClass.simpleName, "TaskList updated successfully.")
+                    callback(true)
+                }
+                .addOnFailureListener { e ->
+                    callback(false)
+                    Log.e(APP_ACTIVITY.javaClass.simpleName, "Error while creating a board.", e)
                 }
         }
     }

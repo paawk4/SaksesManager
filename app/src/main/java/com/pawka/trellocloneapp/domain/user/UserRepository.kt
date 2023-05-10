@@ -18,7 +18,8 @@ interface UserRepository {
     fun getCurrentFirebaseUser(): FirebaseUser?
 
     fun getAssignedMembersList(
-        assignedTo: ArrayList<String>
+        assignedTo: ArrayList<String>,
+        callback: () -> Unit
     ): MutableLiveData<ArrayList<User>>
 
     fun getMemberDetails(email: String, callback: (User) -> Unit)

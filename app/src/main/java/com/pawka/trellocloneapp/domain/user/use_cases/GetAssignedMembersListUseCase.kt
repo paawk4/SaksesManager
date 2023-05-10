@@ -6,7 +6,7 @@ import com.pawka.trellocloneapp.domain.user.UserRepository
 
 class GetAssignedMembersListUseCase(private val repository: UserRepository) {
 
-    fun getAssignedMembersList(assignedTo: ArrayList<String>):MutableLiveData<ArrayList<User>> {
-        return repository.getAssignedMembersList(assignedTo)
+    fun getAssignedMembersList(assignedTo: ArrayList<String>, callback: () -> Unit): MutableLiveData<ArrayList<User>> {
+        return repository.getAssignedMembersList(assignedTo, callback)
     }
 }

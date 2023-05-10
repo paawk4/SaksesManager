@@ -6,7 +6,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.pawka.trellocloneapp.domain.board.Board
 import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.domain.user.UserRepository
 
@@ -78,9 +77,10 @@ object UserRepositoryImpl : UserRepository {
     }
 
     override fun getAssignedMembersList(
-        assignedTo: ArrayList<String>
+        assignedTo: ArrayList<String>,
+        callback: () -> Unit
     ): MutableLiveData<ArrayList<User>> {
-        userFireStoreHandler.getAssignedMembersList(assignedTo)
+        userFireStoreHandler.getAssignedMembersList(assignedTo, callback)
         return assignedMembersListLiveData
     }
 
@@ -125,7 +125,7 @@ object UserRepositoryImpl : UserRepository {
             }
         }
 
-        fun getAssignedMembersList(assignedTo: ArrayList<String>) {
+        fun getAssignedMembersList(assignedTo: ArrayList<String>, callback: () -> Unit) {
             db.whereIn(ID, assignedTo)
                 .get()
                 .addOnSuccessListener { document ->
@@ -137,6 +137,7 @@ object UserRepositoryImpl : UserRepository {
                     }
 
                     assignedMembersListLiveData.value = usersList
+                    callback()
                 }
         }
 

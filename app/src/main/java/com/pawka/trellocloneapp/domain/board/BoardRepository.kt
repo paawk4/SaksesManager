@@ -7,7 +7,7 @@ interface BoardRepository {
 
     fun createBoard(board: Board, callback: () -> Unit)
 
-    fun getBoardDetails(boardId: String, callback: (Board) -> Unit)
+    fun getBoardDetails(boardId: String, callback: (Board) -> Unit): MutableLiveData<Board>
 
     fun getBoardsList(): MutableLiveData<ArrayList<Board>>
 
@@ -16,4 +16,6 @@ interface BoardRepository {
     fun changeBoardDetails()
 
     fun assignMemberToBoard(board: Board, callback: () -> Unit)
+
+    fun addUpdateTaskList(board: Board, callback: (Boolean) -> Unit)
 }

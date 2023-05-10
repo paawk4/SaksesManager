@@ -16,6 +16,7 @@ import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
+import com.pawka.trellocloneapp.utils.showToast
 
 class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
@@ -42,13 +43,11 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
             viewModel.signInUser(etEmail.text.toString(), etPassword.text.toString()) { isSignIn ->
                 hideProgressDialog()
                 if (isSignIn) {
-                    Toast.makeText(layoutView.context, "Вход выполнен успешно", Toast.LENGTH_SHORT)
-                        .show()
+                    showToast("Вход выполнен успешно")
                     NAV_CONTROLLER.navigate(R.id.action_signInFragment_to_boardsFragment)
 
                 } else {
-                    Toast.makeText(layoutView.context, "Попробуй еще раз", Toast.LENGTH_SHORT)
-                        .show()
+                    showToast("Попробуй еще раз")
                 }
             }
         }

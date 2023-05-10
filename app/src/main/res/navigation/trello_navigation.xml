@@ -74,6 +74,9 @@
         <action
             android:id="@+id/action_taskListFragment_to_membersFragment"
             app:destination="@id/membersFragment" />
+        <action
+            android:id="@+id/action_taskListFragment_to_cardDetailsFragment"
+            app:destination="@id/cardDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/membersFragment"
@@ -84,5 +87,23 @@
             android:name="boardId"
             app:argType="string"
             android:defaultValue='""' />
+    </fragment>
+    <fragment
+        android:id="@+id/cardDetailsFragment"
+        android:name="com.pawka.trellocloneapp.presentation.fragments.card.CardDetailsFragment"
+        android:label="fragment_card_details"
+        tools:layout="@layout/fragment_card_details" >
+        <argument
+            android:name="boardId"
+            app:argType="string"
+            android:defaultValue='""' />
+        <argument
+            android:name="taskListItemPosition"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="cardListItemPosition"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 </navigation>

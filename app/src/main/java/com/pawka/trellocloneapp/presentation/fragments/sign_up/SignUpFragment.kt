@@ -16,6 +16,7 @@ import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
+import com.pawka.trellocloneapp.utils.showToast
 
 class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
 
@@ -48,15 +49,10 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
             ) {isSignUp ->
                 hideProgressDialog()
                 if (isSignUp) {
-                    Toast.makeText(
-                        layoutView.context,
-                        "Регистрация пройдена успешно",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast("Регистрация пройдена успешно")
                     NAV_CONTROLLER.navigate(R.id.action_signUpFragment_to_boardsFragment)
                 } else {
-                    Toast.makeText(layoutView.context, "Попробуй еще раз", Toast.LENGTH_SHORT)
-                        .show()
+                    showToast("Попробуй еще раз")
                 }
             }
         }
