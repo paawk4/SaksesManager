@@ -2,7 +2,6 @@ package com.pawka.trellocloneapp.presentation.fragments.task_list
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,6 @@ import com.pawka.trellocloneapp.domain.task.Task
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.showToast
 import java.util.*
-import kotlin.collections.ArrayList
 
 open class TaskListItemAdapter(
     private var list: ArrayList<Task>,
@@ -47,11 +45,11 @@ open class TaskListItemAdapter(
 
     override fun onBindViewHolder(
         holder: TaskListItemViewHolder,
-        @SuppressLint("RecyclerView") position: Int
+        @SuppressLint("RecyclerView") positionTask: Int
     ) {
-        val model = list[position]
+        val model = list[positionTask]
 
-        if (position == list.size - 1) {
+        if (positionTask == list.size - 1) {
             holder.addTaskListTv.visibility = View.VISIBLE
             holder.taskItemLl.visibility = View.GONE
         } else {
@@ -94,14 +92,14 @@ open class TaskListItemAdapter(
         holder.doneEditListNameIb.setOnClickListener {
             val listName = holder.editTaskListNameEt.text.toString()
             if (listName.isNotEmpty()) {
-                context.updateTaskList(position, listName, model)
+                context.updateTaskList(positionTask, listName, model)
             } else {
-                showToast("Please enter a list name")
+                showToast("Введите название списка")
             }
         }
 
         holder.deleteListIb.setOnClickListener {
-            alertDialogForDeleteList(position, model.title)
+            alertDialogForDeleteList(positionTask, model.title)
         }
 
         holder.addCardTv.setOnClickListener {
@@ -117,9 +115,9 @@ open class TaskListItemAdapter(
         holder.doneCardNameIb.setOnClickListener {
             val cardName = holder.cardNameEt.text.toString()
             if (cardName.isNotEmpty()) {
-                context.addCardToTask(position, cardName)
+                context.addCardToTask(positionTask, cardName)
             } else {
-                showToast("Please enter a card name")
+                showToast("Введите название карты")
             }
         }
 
@@ -132,7 +130,7 @@ open class TaskListItemAdapter(
         adapter.setOnClickListener(object :
             CardListItemAdapter.OnClickListener {
             override fun onClick(position: Int) {
-                context.cardDetails(position, position)
+                context.cardDetails(positionTask, position)
             }
         })
 
@@ -160,7 +158,7 @@ open class TaskListItemAdapter(
                     }
 
                     mPositionDraggedTo = targetPosition
-                    Collections.swap(list[position].cards, draggedPosition, targetPosition)
+                    Collections.swap(list[positionTask].cards, draggedPosition, targetPosition)
                     adapter.notifyItemMoved(draggedPosition, targetPosition)
                     return false
                 }
@@ -174,14 +172,12 @@ open class TaskListItemAdapter(
                     viewHolder: RecyclerView.ViewHolder
                 ) {
                     super.clearView(recyclerView, viewHolder)
-                    //if any change was done update the cards list task
                     if (mPositionDraggedFrom != -1 && mPositionDraggedTo != -1 && mPositionDraggedFrom != mPositionDraggedTo) {
                         context.updateCardsInTaskList(
-                            position,
-                            list[position].cards
+                            positionTask,
+                            list[positionTask].cards
                         )
                     }
-                    // reset values
                     mPositionDraggedFrom = -1
                     mPositionDraggedTo = -1
                 }
@@ -194,16 +190,16 @@ open class TaskListItemAdapter(
 
     private fun alertDialogForDeleteList(position: Int, title: String) {
         val builder = AlertDialog.Builder(APP_ACTIVITY)
-        builder.setTitle("Alert!")
-        builder.setMessage("Are you sure you want to delete $title?")
+        builder.setTitle("Внимание!")
+        builder.setMessage("Вы уверены, что хотите удалить $title?")
         builder.setIcon(android.R.drawable.ic_dialog_alert)
 
-        builder.setPositiveButton("Yes") { dialog, _ ->
+        builder.setPositiveButton("Да") { dialog, _ ->
             dialog.dismiss()
             context.deleteTaskList(position)
         }
 
-        builder.setNegativeButton("No") { dialog, _ ->
+        builder.setNegativeButton("Нет") { dialog, _ ->
             dialog.dismiss()
         }
 

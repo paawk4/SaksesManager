@@ -1,5 +1,6 @@
 package com.pawka.trellocloneapp.domain.user
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 
@@ -25,4 +26,6 @@ interface UserRepository {
     fun getMemberDetails(email: String, callback: (User) -> Unit)
 
     fun editUserData(name: String, login: String, password: String)
+
+    fun setProfileImage(uri: Uri, callback: () -> Unit)
 }

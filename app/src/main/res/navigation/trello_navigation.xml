@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.pawka.trellocloneapp.presentation.fragments.profile.SettingsFragment"
+        android:name="com.pawka.trellocloneapp.presentation.fragments.settings.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/createBoardFragment"

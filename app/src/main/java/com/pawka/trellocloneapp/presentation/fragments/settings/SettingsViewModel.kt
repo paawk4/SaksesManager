@@ -1,5 +1,6 @@
-package com.pawka.trellocloneapp.presentation.fragments.profile
+package com.pawka.trellocloneapp.presentation.fragments.settings
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.pawka.trellocloneapp.data.UserRepositoryImpl
 import com.pawka.trellocloneapp.domain.user.use_cases.GetCurrentUserDataUseCase
@@ -16,5 +17,9 @@ class SettingsViewModel: ViewModel() {
 
     fun signOut() {
         signOutUserUseCase.signOutUser()
+    }
+
+    fun putImageToStorage(uri: Uri, callback: () -> Unit) {
+
     }
 }

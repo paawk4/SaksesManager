@@ -20,7 +20,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
             android:padding="12dp"
-            android:text="Add List"
+            android:text="Добавить список"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
             android:visibility="gone"
@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:autofillHints="List Name"
-                    android:hint="List Name"
+                    android:hint="Имя списка"
                     android:inputType="text" />
 
                 <ImageButton
@@ -152,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:autofillHints="List Name"
-                        android:hint="List Name"
+                        android:hint="Имя списка"
                         android:inputType="text" />
 
                     <ImageButton
@@ -201,7 +201,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:autofillHints="Card name"
-                        android:hint="Card name"
+                        android:hint="Имя карты"
                         android:inputType="text" />
 
                     <ImageButton
@@ -223,7 +223,7 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:padding="12dp"
-                android:text="Add Card"
+                android:text="Добавить карту"
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp"
                 tools:visibility="visible" />

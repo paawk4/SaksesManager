@@ -19,7 +19,6 @@ class CardDetailsViewModel : ViewModel() {
 
     private val getBoardDetailsUseCase = GetBoardDetailsUseCase(repositoryBoard)
     private val getAssignedMembersListUseCase = GetAssignedMembersListUseCase(repositoryUser)
-    private val getCurrentUserIdUseCase = GetCurrentUserIdUseCase(repositoryUser)
     private val addUpdateTaskListUseCase = AddUpdateTaskListUseCase(repositoryBoard)
 
     var assignedMembersListLiveData = MutableLiveData<ArrayList<User>>()
@@ -35,9 +34,5 @@ class CardDetailsViewModel : ViewModel() {
 
     fun addUpdateTaskList(board: Board, callback: (Boolean) -> Unit) {
         addUpdateTaskListUseCase.addUpdateTaskList(board, callback)
-    }
-
-    fun getCurrentUserId(): String? {
-        return getCurrentUserIdUseCase.getCurrentUserId()
     }
 }

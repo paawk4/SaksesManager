@@ -16,6 +16,5 @@ class AppDrawerViewModel : ViewModel() {
 
     fun signOut() {
         signOutUserUseCase.signOutUser()
-        restartActivity()
     }
 }

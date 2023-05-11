@@ -86,7 +86,7 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
     }
 
     fun updateTaskList(position: Int, listName: String, model: Task) {
-        val task = Task(listName, model.createdBy)
+        val task = Task(listName, model.createdBy, model.cards)
         viewModel.currentBoardLiveData.value?.let {
             it.taskList[position] = task
             it.taskList.removeAt(it.taskList.size - 1)

@@ -13,8 +13,6 @@ interface BoardRepository {
 
     fun deleteBoard()
 
-    fun changeBoardDetails()
-
     fun assignMemberToBoard(board: Board, callback: () -> Unit)
 
     fun addUpdateTaskList(board: Board, callback: (Boolean) -> Unit)

@@ -40,7 +40,6 @@ open class BoardsListAdapter(private var list: ArrayList<Board>) :
             val boardName = holder.itemView.findViewById<TextView>(R.id.item_board_name_tv)
             val boardCreatedBy =
                 holder.itemView.findViewById<TextView>(R.id.item_board_created_by_tv)
-            //set text
             boardName.text = model.name
             boardCreatedBy.text = "Создан: " + model.createdBy
             holder.itemView.setOnClickListener {

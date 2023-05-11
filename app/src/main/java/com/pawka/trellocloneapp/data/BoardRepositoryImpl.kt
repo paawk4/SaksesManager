@@ -40,10 +40,6 @@ object BoardRepositoryImpl : BoardRepository {
         TODO("Not yet implemented")
     }
 
-    override fun changeBoardDetails() {
-        TODO("Not yet implemented")
-    }
-
     override fun assignMemberToBoard(board: Board, callback: () -> Unit) {
         boardFireStoreHandler.assignMemberToBoard(board, callback)
     }

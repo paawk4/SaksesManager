@@ -22,6 +22,7 @@ import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 import com.pawka.trellocloneapp.utils.hideKeyboard
+import com.pawka.trellocloneapp.utils.restartActivity
 
 class AppDrawer {
 
@@ -65,7 +66,7 @@ class AppDrawer {
                 currentUser = it
                 updateHeader()
             } else {
-                viewModel.signOut()
+                restartActivity()
             }
         }
     }

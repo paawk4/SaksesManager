@@ -1,13 +1,17 @@
 package com.pawka.trellocloneapp.data
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
 import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.domain.user.UserRepository
+import com.pawka.trellocloneapp.utils.APP_ACTIVITY
+import com.pawka.trellocloneapp.utils.getFileExtension
 
 object UserRepositoryImpl : UserRepository {
 
@@ -17,8 +21,12 @@ object UserRepositoryImpl : UserRepository {
     private const val USERS: String = "users"
     private const val ID: String = "id"
     private const val EMAIL: String = "email"
+    private const val IMAGE: String = "image"
+    private const val PASSWORD: String = "password"
+    private const val NAME: String = "name"
 
     private val auth = FirebaseAuth.getInstance()
+    private val storage = FirebaseStorage.getInstance().reference
 
     private val userFireStoreHandler = UserFireStoreHandler()
 
@@ -92,6 +100,24 @@ object UserRepositoryImpl : UserRepository {
 
     }
 
+    override fun setProfileImage(uri: Uri, callback: () -> Unit) {
+        storage.child(
+            "USER_IMAGE" + System.currentTimeMillis()
+                    + "." + getFileExtension(APP_ACTIVITY, uri)
+        ).putFile(uri).addOnSuccessListener { taskSnapshot ->
+            Log.e(
+                "Firebase Image URL",
+                taskSnapshot.metadata!!.reference!!.downloadUrl.toString()
+            )
+            taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener { url ->
+                Log.e("Downloadable Image URL", uri.toString())
+                val userHashMap = HashMap<String, Any>()
+                userHashMap[IMAGE] = url.toString()
+                userFireStoreHandler.updateUserProfileData(userHashMap, callback)
+            }
+        }
+    }
+
     class UserFireStoreHandler {
 
         private val db = FirebaseFirestore.getInstance().collection(USERS)
@@ -106,6 +132,17 @@ object UserRepositoryImpl : UserRepository {
                     .addOnFailureListener {
                         Log.d("Register", "writeUserToDatabase failed\n ${it.message}")
                         callback(false)
+                    }
+            }
+        }
+
+        fun updateUserProfileData(userHashMap: HashMap<String, Any>, callback: () -> Unit) {
+            val currentUserId = getCurrentUserId()
+            currentUserId?.let { id ->
+                db.document(id)
+                    .update(userHashMap)
+                    .addOnSuccessListener {
+                        callback()
                     }
             }
         }
