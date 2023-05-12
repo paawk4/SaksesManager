@@ -36,6 +36,7 @@ class AppDrawer {
     private lateinit var mCurrentProfile: ProfileDrawerItem
 
     fun create() {
+        initLoader()
         viewModel = ViewModelProvider(APP_ACTIVITY)[AppDrawerViewModel::class.java]
         createHeader()
         createDrawer()
@@ -129,5 +130,18 @@ class AppDrawer {
             .withEmail(currentUser.email)
             .withIcon(currentUser.image)
         mHeader.updateProfile(mCurrentProfile)
+    }
+
+    private fun initLoader() {
+        DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
+            override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable) {
+                Glide
+                    .with(APP_ACTIVITY)
+                    .load(uri.toString())
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_user_place_holder)
+                    .into(imageView)
+            }
+        })
     }
 }

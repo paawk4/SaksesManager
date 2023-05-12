@@ -7,8 +7,11 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.presentation.MainActivity
 
 fun hideKeyboard() {

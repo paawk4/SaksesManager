@@ -34,13 +34,12 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
     private lateinit var changePhotoBtn: CircleImageView
 
     private var selectedImageFileUri: Uri? = null
-    private var profileImageURL: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initFields(view)
         viewModel = ViewModelProvider(APP_ACTIVITY)[SettingsViewModel::class.java]
         setHasOptionsMenu(true)
-        initFields(view)
         configureToolbar()
         changePhotoBtn.setOnClickListener {
             val permission = if (Build.VERSION.SDK_INT > 32) {
@@ -65,13 +64,14 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
         observeViewModel()
     }
 
+
     private fun observeViewModel() {
         viewModel.currentUserLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
                 emailTv.text = it.email
                 nameTv.text = it.name
                 Glide
-                    .with(APP_ACTIVITY)
+                    .with(this)
                     .load(it.image)
                     .centerCrop()
                     .placeholder(R.drawable.ic_user_place_holder)

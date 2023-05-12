@@ -10,8 +10,6 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.domain.user.UserRepository
-import com.pawka.trellocloneapp.utils.APP_ACTIVITY
-import com.pawka.trellocloneapp.utils.getFileExtension
 
 object UserRepositoryImpl : UserRepository {
 
@@ -101,21 +99,19 @@ object UserRepositoryImpl : UserRepository {
     }
 
     override fun setProfileImage(uri: Uri, callback: () -> Unit) {
-        storage.child(
-            "USER_IMAGE" + System.currentTimeMillis()
-                    + "." + getFileExtension(APP_ACTIVITY, uri)
-        ).putFile(uri).addOnSuccessListener { taskSnapshot ->
-            Log.e(
-                "Firebase Image URL",
-                taskSnapshot.metadata!!.reference!!.downloadUrl.toString()
-            )
-            taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener { url ->
-                Log.e("Downloadable Image URL", uri.toString())
-                val userHashMap = HashMap<String, Any>()
-                userHashMap[IMAGE] = url.toString()
-                userFireStoreHandler.updateUserProfileData(userHashMap, callback)
+        storage.child("user_image").child(getCurrentUserId() ?: "").putFile(uri)
+            .addOnSuccessListener { taskSnapshot ->
+                Log.e(
+                    "Firebase Image URL",
+                    taskSnapshot.metadata!!.reference!!.downloadUrl.toString()
+                )
+                taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener { url ->
+                    Log.e("Downloadable Image URL", uri.toString())
+                    val userHashMap = HashMap<String, Any>()
+                    userHashMap[IMAGE] = url.toString()
+                    userFireStoreHandler.updateUserProfileData(userHashMap, callback)
+                }
             }
-        }
     }
 
     class UserFireStoreHandler {
@@ -142,6 +138,7 @@ object UserRepositoryImpl : UserRepository {
                 db.document(id)
                     .update(userHashMap)
                     .addOnSuccessListener {
+                        loadUserData()
                         callback()
                     }
             }

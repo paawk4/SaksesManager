@@ -1,5 +1,6 @@
 package com.pawka.trellocloneapp.presentation.fragments.create_board
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,7 @@ import com.pawka.trellocloneapp.data.BoardRepositoryImpl
 import com.pawka.trellocloneapp.data.UserRepositoryImpl
 import com.pawka.trellocloneapp.domain.board.Board
 import com.pawka.trellocloneapp.domain.board.use_cases.CreateBoardUseCase
+import com.pawka.trellocloneapp.domain.board.use_cases.SetBoardImageUseCase
 import com.pawka.trellocloneapp.domain.user.use_cases.GetCurrentUserDataUseCase
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 import com.pawka.trellocloneapp.utils.parseString
@@ -18,6 +20,7 @@ class CreateBoardViewModel : ViewModel() {
 
     private val createBoardUseCase = CreateBoardUseCase(repositoryBoard)
     private val getCurrentUserUseCase = GetCurrentUserDataUseCase(repositoryUser)
+    private val setBoardImageUseCase = SetBoardImageUseCase(repositoryBoard)
 
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>
@@ -40,6 +43,10 @@ class CreateBoardViewModel : ViewModel() {
         } else {
             _errorInputName.value = true
         }
+    }
+
+    fun putImageToStorage(uri: Uri, callback: () -> Unit) {
+        setBoardImageUseCase.setBoardImage(uri, callback)
     }
 
     fun resetErrorInputName() {

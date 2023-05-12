@@ -1,32 +1,38 @@
 package com.pawka.trellocloneapp.data
 
-import android.app.Activity
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
 import com.pawka.trellocloneapp.data.UserRepositoryImpl.getCurrentUserId
 import com.pawka.trellocloneapp.domain.board.Board
 import com.pawka.trellocloneapp.domain.board.BoardRepository
-import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
+import kotlin.random.Random
 
 object BoardRepositoryImpl : BoardRepository {
 
     private val boardsListLiveData = MutableLiveData<ArrayList<Board>>()
     private val currentBoardLiveData = MutableLiveData<Board>()
+    private var imageUrl = ""
 
     private const val BOARDS = "boards"
     private const val ASSIGNED_TO: String = "assignedTo"
     private const val TASK_LIST: String = "taskList"
 
     private val boardFireStoreHandler = BoardFireStoreHandler()
+    private val storage = FirebaseStorage.getInstance().reference
 
     override fun createBoard(board: Board, callback: () -> Unit) {
         boardFireStoreHandler.createBoard(board, callback)
     }
 
-    override fun getBoardDetails(boardId: String, callback: (Board) -> Unit): MutableLiveData<Board>{
+    override fun getBoardDetails(
+        boardId: String,
+        callback: (Board) -> Unit
+    ): MutableLiveData<Board> {
         boardFireStoreHandler.getBoardDetails(boardId, callback)
         return currentBoardLiveData
     }
@@ -38,6 +44,18 @@ object BoardRepositoryImpl : BoardRepository {
 
     override fun deleteBoard() {
         TODO("Not yet implemented")
+    }
+
+    override fun setBoardImage(uri: Uri, callback: () -> Unit) {
+        storage.child("board_image").child(Random.nextBytes(10).toString()).putFile(uri)
+            .addOnSuccessListener { taskSnapshot ->
+                taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener { url ->
+                    Log.e("Downloadable Image URL", uri.toString())
+                    imageUrl = url.toString()
+                    callback()
+                }
+            }
+
     }
 
     override fun assignMemberToBoard(board: Board, callback: () -> Unit) {
@@ -53,6 +71,7 @@ object BoardRepositoryImpl : BoardRepository {
         private val mFireStore = FirebaseFirestore.getInstance()
 
         fun createBoard(boardInfo: Board, callback: () -> Unit) {
+            boardInfo.image = imageUrl
             mFireStore.collection(BOARDS)
                 .document()
                 .set(boardInfo, SetOptions.merge())
