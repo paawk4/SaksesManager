@@ -42,8 +42,8 @@ object BoardRepositoryImpl : BoardRepository {
         return boardsListLiveData
     }
 
-    override fun deleteBoard() {
-        TODO("Not yet implemented")
+    override fun deleteBoard(callback: () -> Unit) {
+        boardFireStoreHandler.deleteBoard(callback)
     }
 
     override fun setBoardImage(uri: Uri, callback: () -> Unit) {
@@ -68,12 +68,11 @@ object BoardRepositoryImpl : BoardRepository {
 
     class BoardFireStoreHandler {
 
-        private val mFireStore = FirebaseFirestore.getInstance()
+        private val db = FirebaseFirestore.getInstance().collection(BOARDS)
 
         fun createBoard(boardInfo: Board, callback: () -> Unit) {
             boardInfo.image = imageUrl
-            mFireStore.collection(BOARDS)
-                .document()
+            db.document()
                 .set(boardInfo, SetOptions.merge())
                 .addOnSuccessListener {
                     getBoardsList()
@@ -83,11 +82,19 @@ object BoardRepositoryImpl : BoardRepository {
                 }
         }
 
+        fun deleteBoard(callback: () -> Unit) {
+            db.document(currentBoardLiveData.value?.documentID!!)
+                .delete()
+                .addOnSuccessListener {
+                    getBoardsList()
+                    callback()
+                }
+        }
+
         fun getBoardsList() {
             val currentUserId = getCurrentUserId()
             currentUserId?.let { id ->
-                mFireStore.collection(BOARDS)
-                    .whereArrayContains(ASSIGNED_TO, id)
+                db.whereArrayContains(ASSIGNED_TO, id)
                     .get()
                     .addOnSuccessListener { document ->
                         Log.e("GetBoardList", document.documents.toString())
@@ -104,8 +111,7 @@ object BoardRepositoryImpl : BoardRepository {
         }
 
         fun getBoardDetails(boardId: String, callback: (Board) -> Unit) {
-            mFireStore.collection(BOARDS)
-                .document(boardId)
+            db.document(boardId)
                 .get()
                 .addOnSuccessListener { document ->
                     Log.e("getBoardDetails", document.toString())
@@ -120,8 +126,7 @@ object BoardRepositoryImpl : BoardRepository {
             val assignedToHashMap = HashMap<String, Any>()
             assignedToHashMap[ASSIGNED_TO] = board.assignedTo
 
-            mFireStore.collection(BOARDS)
-                .document(board.documentID)
+            db.document(board.documentID)
                 .update(assignedToHashMap)
                 .addOnSuccessListener {
                     currentBoardLiveData.value = board
@@ -136,8 +141,7 @@ object BoardRepositoryImpl : BoardRepository {
             val taskListHashMap = HashMap<String, Any>()
             taskListHashMap[TASK_LIST] = board.taskList
 
-            mFireStore.collection(BOARDS)
-                .document(board.documentID)
+            db.document(board.documentID)
                 .update(taskListHashMap)
                 .addOnSuccessListener {
                     currentBoardLiveData.value = board

@@ -10,6 +10,11 @@
                 android:orderInCategory="100"
                 android:title="Участники"
                 app:showAsAction="never"/>
+            <item
+                android:id="@+id/delete_board"
+                android:orderInCategory="100"
+                android:title="Удалить доску"
+                app:showAsAction="never"/>
         </menu>
     </item>
 </menu>

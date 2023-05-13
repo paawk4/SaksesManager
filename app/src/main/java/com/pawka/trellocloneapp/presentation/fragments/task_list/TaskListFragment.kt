@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -50,7 +49,7 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
         viewModel.assignedMembersListLiveData.observe(viewLifecycleOwner) {
             assignedMembersDetailList = it
 
-            viewModel.currentBoardLiveData.observe(viewLifecycleOwner) {board ->
+            viewModel.currentBoardLiveData.observe(viewLifecycleOwner) { board ->
                 showBoardsDetails(board)
             }
         }
@@ -160,6 +159,8 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.task_list_action_menu, menu)
+        if (viewModel.currentBoardLiveData.value?.createdBy != viewModel.getCurrentUserId())
+            menu.removeItem(R.id.delete_board)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -171,6 +172,13 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
                     R.id.action_taskListFragment_to_membersFragment,
                     bundle
                 )
+            }
+            R.id.delete_board -> {
+                showProgressDialog()
+                viewModel.deleteBoard {
+                    hideProgressDialog()
+                    NAV_CONTROLLER.popBackStack()
+                }
             }
         }
         return true
