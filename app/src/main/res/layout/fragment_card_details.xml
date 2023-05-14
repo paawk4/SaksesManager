@@ -58,7 +58,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Цвет надписи"
+                    android:text="Цвет"
                     android:textColor="@color/secondary_text_color"
                     android:textSize="14sp"
                     android:id="@+id/select_label_color_tv_1"/>
