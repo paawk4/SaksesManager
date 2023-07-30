@@ -6,11 +6,12 @@ import androidx.appcompat.widget.Toolbar
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.presentation.app_drawer.AppDrawer
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var toolbar: Toolbar
-    lateinit var appDrawer: AppDrawer
+    val appDrawer: AppDrawer by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +23,5 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         toolbar = findViewById(R.id.toolbar_main_activity)
-        appDrawer = AppDrawer()
     }
 }

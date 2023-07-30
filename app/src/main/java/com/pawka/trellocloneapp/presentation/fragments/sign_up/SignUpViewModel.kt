@@ -3,15 +3,10 @@ package com.pawka.trellocloneapp.presentation.fragments.sign_up
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.pawka.trellocloneapp.data.UserRepositoryImpl
 import com.pawka.trellocloneapp.domain.user.use_cases.SignUpUserUseCase
 import com.pawka.trellocloneapp.utils.parseString
 
-class SignUpViewModel : ViewModel() {
-
-    private val repository = UserRepositoryImpl
-
-    private val signUpUserUseCase = SignUpUserUseCase(repository)
+class SignUpViewModel(private val signUpUserUseCase: SignUpUserUseCase) : ViewModel() {
 
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>

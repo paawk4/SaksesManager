@@ -24,10 +24,7 @@ import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 import com.pawka.trellocloneapp.utils.hideKeyboard
 import com.pawka.trellocloneapp.utils.restartActivity
 
-class AppDrawer {
-
-    lateinit var viewModel: AppDrawerViewModel
-
+class AppDrawer(private val viewModel: AppDrawerViewModel) {
     private var currentUser = User()
 
     private lateinit var mDrawer: Drawer
@@ -37,7 +34,6 @@ class AppDrawer {
 
     fun create() {
         initLoader()
-        viewModel = ViewModelProvider(APP_ACTIVITY)[AppDrawerViewModel::class.java]
         createHeader()
         createDrawer()
         mDrawerLayout = mDrawer.drawerLayout

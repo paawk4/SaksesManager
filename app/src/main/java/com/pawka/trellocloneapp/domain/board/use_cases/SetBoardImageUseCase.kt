@@ -2,10 +2,12 @@ package com.pawka.trellocloneapp.domain.board.use_cases
 
 import android.net.Uri
 import com.pawka.trellocloneapp.domain.board.BoardRepository
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class SetBoardImageUseCase(private val repository: BoardRepository) {
-
+class SetBoardImageUseCase : KoinComponent {
+    private val boardRepository: BoardRepository by inject()
     fun setBoardImage(uri: Uri, callback: () -> Unit) {
-        return repository.setBoardImage(uri, callback)
+        return boardRepository.setBoardImage(uri, callback)
     }
 }

@@ -2,8 +2,6 @@ package com.pawka.trellocloneapp.presentation.fragments.task_list
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.pawka.trellocloneapp.data.BoardRepositoryImpl
-import com.pawka.trellocloneapp.data.UserRepositoryImpl
 import com.pawka.trellocloneapp.domain.board.Board
 import com.pawka.trellocloneapp.domain.board.use_cases.AddUpdateTaskListUseCase
 import com.pawka.trellocloneapp.domain.board.use_cases.DeleteBoardUseCase
@@ -12,16 +10,13 @@ import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.domain.user.use_cases.GetAssignedMembersListUseCase
 import com.pawka.trellocloneapp.domain.user.use_cases.GetCurrentUserIdUseCase
 
-class TaskListViewModel : ViewModel() {
-
-    private val repositoryBoard = BoardRepositoryImpl
-    private val repositoryUser = UserRepositoryImpl
-
-    private val getBoardDetailsUseCase = GetBoardDetailsUseCase(repositoryBoard)
-    private val addUpdateTaskListUseCase = AddUpdateTaskListUseCase(repositoryBoard)
-    private val deleteBoardUseCase = DeleteBoardUseCase(repositoryBoard)
-    private val getAssignedMembersListUseCase = GetAssignedMembersListUseCase(repositoryUser)
-    private val getCurrentUserIdUseCase = GetCurrentUserIdUseCase(repositoryUser)
+class TaskListViewModel(
+    private val getBoardDetailsUseCase: GetBoardDetailsUseCase,
+    private val addUpdateTaskListUseCase: AddUpdateTaskListUseCase,
+    private val deleteBoardUseCase: DeleteBoardUseCase,
+    private val getAssignedMembersListUseCase: GetAssignedMembersListUseCase,
+    private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase
+) : ViewModel() {
 
     var assignedMembersListLiveData = MutableLiveData<ArrayList<User>>()
     var currentBoardLiveData = MutableLiveData<Board>()

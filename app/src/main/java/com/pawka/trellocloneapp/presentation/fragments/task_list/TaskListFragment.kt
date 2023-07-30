@@ -5,8 +5,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.core.view.removeItemAt
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pawka.trellocloneapp.R
@@ -17,17 +15,17 @@ import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
 
-    private lateinit var viewModel: TaskListViewModel
+    private val viewModel by viewModel<TaskListViewModel>()
     private lateinit var assignedMembersDetailList: ArrayList<User>
     private lateinit var taskListRv: RecyclerView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         taskListRv = view.findViewById(R.id.task_list_rv)
-        viewModel = ViewModelProvider(this)[TaskListViewModel::class.java]
         showProgressDialog()
         setHasOptionsMenu(true)
 

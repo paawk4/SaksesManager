@@ -2,21 +2,17 @@ package com.pawka.trellocloneapp.presentation.fragments.boards
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.domain.board.Board
 import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
-import com.pawka.trellocloneapp.presentation.fragments.create_board.CreateBoardViewModel
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BoardsFragment : BaseFragment(R.layout.fragment_boards) {
 
@@ -24,11 +20,10 @@ class BoardsFragment : BaseFragment(R.layout.fragment_boards) {
     private lateinit var noBoardsTv: TextView
     private lateinit var createBoardBtn: FloatingActionButton
 
-    private lateinit var viewModel: BoardsViewModel
+    private val viewModel by viewModel<BoardsViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[BoardsViewModel::class.java]
         showProgressDialog()
         initViews(view)
         configureToolbar()

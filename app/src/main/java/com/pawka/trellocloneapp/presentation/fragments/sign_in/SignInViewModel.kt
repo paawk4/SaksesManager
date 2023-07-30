@@ -7,11 +7,7 @@ import com.pawka.trellocloneapp.data.UserRepositoryImpl
 import com.pawka.trellocloneapp.domain.user.use_cases.SignInUserUseCase
 import com.pawka.trellocloneapp.utils.parseString
 
-class SignInViewModel : ViewModel() {
-
-    private val repository = UserRepositoryImpl
-
-    private val signInUserUseCase = SignInUserUseCase(repository)
+class SignInViewModel(private val signInUserUseCase : SignInUserUseCase) : ViewModel() {
 
     private val _errorInputEmail = MutableLiveData<Boolean>()
     val errorInputEmail: LiveData<Boolean>

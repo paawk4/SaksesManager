@@ -4,23 +4,17 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.pawka.trellocloneapp.data.BoardRepositoryImpl
-import com.pawka.trellocloneapp.data.UserRepositoryImpl
 import com.pawka.trellocloneapp.domain.board.Board
 import com.pawka.trellocloneapp.domain.board.use_cases.CreateBoardUseCase
 import com.pawka.trellocloneapp.domain.board.use_cases.SetBoardImageUseCase
 import com.pawka.trellocloneapp.domain.user.use_cases.GetCurrentUserDataUseCase
-import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 import com.pawka.trellocloneapp.utils.parseString
 
-class CreateBoardViewModel : ViewModel() {
-
-    private val repositoryBoard = BoardRepositoryImpl
-    private val repositoryUser = UserRepositoryImpl
-
-    private val createBoardUseCase = CreateBoardUseCase(repositoryBoard)
-    private val getCurrentUserUseCase = GetCurrentUserDataUseCase(repositoryUser)
-    private val setBoardImageUseCase = SetBoardImageUseCase(repositoryBoard)
+class CreateBoardViewModel(
+    private val createBoardUseCase: CreateBoardUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserDataUseCase,
+    private val setBoardImageUseCase: SetBoardImageUseCase
+) : ViewModel() {
 
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>

@@ -8,8 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pawka.trellocloneapp.R
@@ -18,19 +16,19 @@ import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.showToast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MembersFragment : BaseFragment(R.layout.fragment_members) {
 
-    private lateinit var viewModel: MembersViewModel
+    private val viewModel by viewModel<MembersViewModel>()
     private lateinit var membersListRv: RecyclerView
-    private lateinit var assignedMembersList : ArrayList<User>
+    private lateinit var assignedMembersList: ArrayList<User>
     private var boardDetails = Board()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         initViews(view)
-        viewModel = ViewModelProvider(this)[MembersViewModel::class.java]
 
         showProgressDialog()
         val boardId = arguments?.getString("boardId")
@@ -67,13 +65,13 @@ class MembersFragment : BaseFragment(R.layout.fragment_members) {
 
     }
 
-    private fun dialogSearchMember(){
+    private fun dialogSearchMember() {
         val dialog = Dialog(APP_ACTIVITY)
         dialog.setContentView(R.layout.dialog_serach_member)
 
         dialog.findViewById<TextView>(R.id.add_tv).setOnClickListener {
             val email = dialog.findViewById<EditText>(R.id.email_search_member_et).text.toString()
-            if(email.isNotEmpty()){
+            if (email.isNotEmpty()) {
                 showProgressDialog()
                 viewModel.getMemberDetails(email) {
                     if (it != User()) {
@@ -85,7 +83,7 @@ class MembersFragment : BaseFragment(R.layout.fragment_members) {
 
                 }
                 dialog.dismiss()
-            }else{
+            } else {
                 showToast("Введите почту")
             }
         }
@@ -104,7 +102,7 @@ class MembersFragment : BaseFragment(R.layout.fragment_members) {
         }
     }
 
-    private fun memberAssignSuccess(user : User){
+    private fun memberAssignSuccess(user: User) {
         hideProgressDialog()
         assignedMembersList.add(user)
         viewModel.assignedMembersListLiveData.value = assignedMembersList

@@ -14,7 +14,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
@@ -23,11 +22,12 @@ import com.pawka.trellocloneapp.utils.PICK_IMAGE_REQUEST_CODE
 import com.pawka.trellocloneapp.utils.READ_STORAGE_PERMISSION_CODE
 import com.pawka.trellocloneapp.utils.showImageChooser
 import de.hdodenhof.circleimageview.CircleImageView
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.IOException
 
 class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
 
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel by viewModel<SettingsViewModel>()
     private lateinit var emailTv: TextView
     private lateinit var nameTv: TextView
     private lateinit var photoIv: CircleImageView
@@ -38,7 +38,6 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initFields(view)
-        viewModel = ViewModelProvider(APP_ACTIVITY)[SettingsViewModel::class.java]
         setHasOptionsMenu(true)
         configureToolbar()
         changePhotoBtn.setOnClickListener {

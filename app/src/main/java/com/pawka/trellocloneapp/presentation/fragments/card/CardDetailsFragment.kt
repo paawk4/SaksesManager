@@ -13,14 +13,12 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.domain.board.Board
 import com.pawka.trellocloneapp.domain.card.Card
 import com.pawka.trellocloneapp.domain.selected_members.SelectedMembers
-import com.pawka.trellocloneapp.domain.task.Task
 import com.pawka.trellocloneapp.domain.user.User
 import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
 import com.pawka.trellocloneapp.presentation.fragments.members.MembersListDialog
@@ -28,12 +26,13 @@ import com.pawka.trellocloneapp.presentation.fragments.task_list.CardMemberListI
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 import com.pawka.trellocloneapp.utils.showToast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Date
 import java.util.Locale
 
 class CardDetailsFragment : BaseFragment(R.layout.fragment_card_details) {
 
-    private lateinit var viewModel: CardDetailsViewModel
+    private val viewModel by viewModel<CardDetailsViewModel>()
 
     private lateinit var nameCardDetailsEt: EditText
     private lateinit var selectLabelColorTv: TextView
@@ -54,7 +53,6 @@ class CardDetailsFragment : BaseFragment(R.layout.fragment_card_details) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         initViews(view)
-        viewModel = ViewModelProvider(this)[CardDetailsViewModel::class.java]
         showProgressDialog()
         getReceivedArguments {
             configureToolbar()
@@ -122,7 +120,7 @@ class CardDetailsFragment : BaseFragment(R.layout.fragment_card_details) {
 
         selectedDueDateMS = currentBoard.taskList[taskListPosition].cards[cardListPosition].dueDate
 
-        if(selectedDueDateMS > 0){
+        if (selectedDueDateMS > 0) {
             val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
             val selectedDate = simpleDateFormat.format(Date(selectedDueDateMS))
             selectDueDateTv.text = selectedDate
@@ -135,23 +133,25 @@ class CardDetailsFragment : BaseFragment(R.layout.fragment_card_details) {
         setupSelectedMembersList()
     }
 
-    private fun showDatePicker(){
+    private fun showDatePicker() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val datePickerDialogListener =  DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            val sDayOfMonth = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
-            val sMonthOfYear = if((monthOfYear + 1) < 10) "0${monthOfYear+1}" else "${monthOfYear+1}"
+        val datePickerDialogListener =
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                val sDayOfMonth = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                val sMonthOfYear =
+                    if ((monthOfYear + 1) < 10) "0${monthOfYear + 1}" else "${monthOfYear + 1}"
 
-            val selectedDate = "$sDayOfMonth/$sMonthOfYear/$year"
-            selectDueDateTv.text = selectedDate
+                val selectedDate = "$sDayOfMonth/$sMonthOfYear/$year"
+                selectDueDateTv.text = selectedDate
 
-            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
-            val theDate = sdf.parse(selectedDate)
-            selectedDueDateMS = theDate!!.time
-        }
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
+                val theDate = sdf.parse(selectedDate)
+                selectedDueDateMS = theDate!!.time
+            }
 
         val datePickerDialog = DatePickerDialog(
             APP_ACTIVITY,

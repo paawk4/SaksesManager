@@ -3,24 +3,20 @@ package com.pawka.trellocloneapp.presentation.fragments.sign_in
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.pawka.trellocloneapp.R
 import com.pawka.trellocloneapp.presentation.fragments.BaseFragment
 import com.pawka.trellocloneapp.utils.APP_ACTIVITY
 import com.pawka.trellocloneapp.utils.NAV_CONTROLLER
 import com.pawka.trellocloneapp.utils.showToast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
-    private lateinit var viewModel: SignInViewModel
+    private val viewModel by viewModel<SignInViewModel>()
 
     private lateinit var layoutView: View
 
@@ -32,7 +28,6 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[SignInViewModel::class.java]
         initViews(view)
         addTextChangeListeners()
         observeViewModel()
